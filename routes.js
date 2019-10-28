@@ -71,6 +71,18 @@ var routes = function(app) {
       return res.send(dummyData);
     }
   });  
+  
+  app.get("/info", function(req, res) {
+    
+    console.log("Received GET: "+JSON.stringify(req.body));
+    if(!req.query.username) {
+      return res.send({"status": "error", "message": "no username"});
+    } else if(!req.query.data) {
+      return res.send({"status": "error", "message": "no data"});
+    } else {
+      return res.send();
+    }
+  });  
 };
  
 module.exports = routes;
