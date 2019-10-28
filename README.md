@@ -16,3 +16,7 @@ Keep this project open and view 'Logs' to see the console output.
 
 ## Getting Help
 You can see other example projects on our [Community Projects](https://glitch.com/) page. And if you get stuck, let us know on the [forum](http://support.glitch.com/) and we can help you out.
+
+## Testing
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/69dfb1d37fcd62e17761)
