@@ -74,13 +74,13 @@ var routes = function(app) {
   
   app.get("/info", function(req, res) {
     
-    console.log("Received GET: "+JSON.stringify(req.body));
-    if(!req.query.username) {
-      return res.send({"status": "error", "message": "no username"});
-    } else if(!req.query.data) {
-      return res.send({"status": "error", "message": "no data"});
+    console.log("Received GET: "+JSON.stringify(req.query));
+    if(!req.query.id) {
+      return res.send({"status": "error", "message": "no id"});
     } else {
-      return res.send();
+      let responseData = new Object();
+      responseData['message']='You sent a request to the API! You asked for id '+req.query.id+' on the /info endpoint';
+      return res.send(responseData);
     }
   });  
 };
