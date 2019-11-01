@@ -6,7 +6,8 @@ var routes = function(app) {
 // request to the console. The HTML you see in the browser is what `res.send()` is sending back.
 //
   app.get("/", function(req, res) {
-    res.send("<h1>REST API</h1><p>Oh, hi! There's not much to see here - view the code instead</p><script src=\"https://button.glitch.me/button.js\" data-style=\"glitch\"></script><div class=\"glitchButton\" style=\"position:fixed;top:20px;right:20px;\"></div>");
+    res.send("<h1>REST API</h1><p>Oh, hi! There's not much to see here - view the code instead</p>"+
+             "<script src=\"https://button.glitch.me/button.js\" data-style=\"glitch\"></script><div class=\"glitchButton\" style=\"position:fixed;top:20px;right:20px;\"></div>");
     console.log("Received GET");
   });
   
@@ -18,7 +19,9 @@ var routes = function(app) {
       return res.send({"status": "error", "message": "no id"});
     } else {
       let responseData = new Object();
-      responseData['message']='You sent a request to the API! You asked for id '+req.query.id+' on the /info endpoint';
+      responseData['title']='Your API request';
+      responseData['message']='You sent a request to the API! '+
+        'You asked the /info endpoint for the following query parameters: '+JSON.stringify(req.query);
       return res.send(responseData);
     }
   });  
