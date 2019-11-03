@@ -1,3 +1,5 @@
+var xml = require("xml");
+
 var routes = function(app) {
 //
 // This route processes GET requests, by using the `get()` method in express, and we're looking for them on
@@ -25,6 +27,14 @@ var routes = function(app) {
       return res.send(responseData);
     }
   });  
+  
+  //endpoint to return xml
+  app.get("/data", function(req, res) {
+    res.type('application/xml');
+    let responseData = new Object();
+      responseData['title']='Your API request';
+    res.send(xml(responseData));
+  });
 };
  
 module.exports = routes;
