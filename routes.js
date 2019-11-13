@@ -28,7 +28,7 @@ var routes = function(app) {
     }
   });  
   
-  //endpoint to return xml
+  //get all users
   app.get("/users", function(req, res) {
       let responseData = new Array();
       let item = new Object();
@@ -39,34 +39,36 @@ var routes = function(app) {
       return res.send(responseData);
   });
   
+  //add new user
   app.post("/user", function(req, res) {
     var dummyData = {
       "username": "testUser",
       "data": "1234"
     };
     console.log("Received GET: "+JSON.stringify(req.body));
-    if(!req.query.username) {
+    if(!req.body.username) {
       return res.send({"status": "error", "message": "no username"});
-    } else if(!req.query.data) {
+    } else if(!req.body.data) {
       return res.send({"status": "error", "message": "no data"});
-    } else if(req.query.username != dummyData.username) {
+    } else if(req.body.username != dummyData.username) {
       return res.send({"status": "error", "message": "username does not match"});
     } else {
       return res.send(dummyData);
     }
   });
   
-  app.patch("/update", function(req, res) {
+  //update user
+  app.patch("/user", function(req, res) {
     var dummyData = {
       "username": "testUser",
       "data": "1234"
     };
     console.log("Received GET: "+JSON.stringify(req.body));
-    if(!req.query.username) {
+    if(!req.body.username) {
       return res.send({"status": "error", "message": "no username"});
-    } else if(!req.query.data) {
+    } else if(!req.body.data) {
       return res.send({"status": "error", "message": "no data"});
-    } else if(req.query.username != dummyData.username) {
+    } else if(req.body.username != dummyData.username) {
       return res.send({"status": "error", "message": "username does not match"});
     } else {
       return res.send(dummyData);
