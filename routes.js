@@ -41,24 +41,27 @@ var routes = function(app) {
   
   //add new user
   app.post("/customer", function(req, res) {
-    if(!req.body.username) {
-      return res.send({"status": "error", "message": "no username"});
-    } else if(!req.body.data) {
-      return res.send({"status": "error", "message": "no data"});
+    if(!req.body.name) {
+      return res.send({"status": "error", "message": "no name"});
+    } else if(!req.body.type) {
+      return res.send({"status": "error", "message": "no type"});
     } else {
-      let 
-      return res.send(JSON.stringify(req.body));
+      let confirmation=new Object();
+      confirmation['status']='customer added';
+      return res.send(confirmation);
     }
   });
   
   //update user
   app.patch("/customer", function(req, res) {
-    if(!req.body.username) {
-      return res.send({"status": "error", "message": "no username"});
-    } else if(!req.body.data) {
-      return res.send({"status": "error", "message": "no data"});
+    if(!req.body.name) {
+      return res.send({"status": "error", "message": "no name"});
+    } else if(!req.body.type) {
+      return res.send({"status": "error", "message": "no type"});
     } else {
-      return res.send(JSON.stringify(req.body));
+      let confirmation=new Object();
+      confirmation['status']='customer updated';
+      return res.send(confirmation);
     }
   });
 };
