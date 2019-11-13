@@ -14,7 +14,7 @@ var routes = function(app) {
   });
   
   //get request with query param
-  app.get("/info", function(req, res) {
+  app.get("/user", function(req, res) {
     
     console.log("Received GET: "+JSON.stringify(req.query));
     if(!req.query.id) {
@@ -23,17 +23,54 @@ var routes = function(app) {
       let responseData = new Object();
       responseData['title']='Your API request';
       responseData['message']='You sent a request to the API! '+
-        'You asked the /info endpoint for the following query parameters: '+JSON.stringify(req.query);
+        'You asked the /user endpoint for the following query parameters: '+JSON.stringify(req.query);
       return res.send(responseData);
     }
   });  
   
   //endpoint to return xml
-  app.get("/data", function(req, res) {
-    res.type('application/xml');
-    let responseData = new Object();
-      responseData['title']='Your API request';
-    res.send(xml(responseData));
+  app.get("/users", function(req, res) {
+      let responseData = new Array();
+      let item = new Object();
+      item['title']='Your API request';
+      item['message']='You sent a request to the API! '+
+        'You asked for the /users endpoint';
+      responseData[0]=item;
+      return res.send(responseData);
+  });
+  
+  app.post("/user", function(req, res) {
+    var dummyData = {
+      "username": "testUser",
+      "data": "1234"
+    };
+    console.log("Received GET: "+JSON.stringify(req.body));
+    if(!req.query.username) {
+      return res.send({"status": "error", "message": "no username"});
+    } else if(!req.query.data) {
+      return res.send({"status": "error", "message": "no data"});
+    } else if(req.query.username != dummyData.username) {
+      return res.send({"status": "error", "message": "username does not match"});
+    } else {
+      return res.send(dummyData);
+    }
+  });
+  
+  app.patch("/update", function(req, res) {
+    var dummyData = {
+      "username": "testUser",
+      "data": "1234"
+    };
+    console.log("Received GET: "+JSON.stringify(req.body));
+    if(!req.query.username) {
+      return res.send({"status": "error", "message": "no username"});
+    } else if(!req.query.data) {
+      return res.send({"status": "error", "message": "no data"});
+    } else if(req.query.username != dummyData.username) {
+      return res.send({"status": "error", "message": "username does not match"});
+    } else {
+      return res.send(dummyData);
+    }
   });
 };
  
