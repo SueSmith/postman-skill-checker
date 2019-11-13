@@ -14,64 +14,51 @@ var routes = function(app) {
   });
   
   //get request with query param
-  app.get("/user", function(req, res) {
-    
-    console.log("Received GET: "+JSON.stringify(req.query));
+  app.get("/customer", function(req, res) {
     if(!req.query.id) {
       return res.send({"status": "error", "message": "no id"});
     } else {
       let responseData = new Object();
-      responseData['title']='Your API request';
-      responseData['message']='You sent a request to the API! '+
-        'You asked the /user endpoint for the following query parameters: '+JSON.stringify(req.query);
+      responseData['name']='Mary Smith';
+      responseData['type']='Individual';
       return res.send(responseData);
     }
   });  
   
   //get all users
-  app.get("/users", function(req, res) {
+  app.get("/customers", function(req, res) {
       let responseData = new Array();
-      let item = new Object();
-      item['title']='Your API request';
-      item['message']='You sent a request to the API! '+
-        'You asked for the /users endpoint';
-      responseData[0]=item;
+      let indivCust = new Object();
+      indivCust['name']='Mary Smith';
+      indivCust['type']='Individual';
+      responseData[0]=indivCust;
+      let compCust=new Object();
+      compCust['name']='John Jones';
+      compCust['type']='Company'
+      responseData[1]=compCust;
       return res.send(responseData);
   });
   
   //add new user
-  app.post("/user", function(req, res) {
-    var dummyData = {
-      "username": "testUser",
-      "data": "1234"
-    };
-    console.log("Received GET: "+JSON.stringify(req.body));
+  app.post("/customer", function(req, res) {
     if(!req.body.username) {
       return res.send({"status": "error", "message": "no username"});
     } else if(!req.body.data) {
       return res.send({"status": "error", "message": "no data"});
-    } else if(req.body.username != dummyData.username) {
-      return res.send({"status": "error", "message": "username does not match"});
     } else {
-      return res.send(dummyData);
+      let 
+      return res.send(JSON.stringify(req.body));
     }
   });
   
   //update user
-  app.patch("/user", function(req, res) {
-    var dummyData = {
-      "username": "testUser",
-      "data": "1234"
-    };
-    console.log("Received GET: "+JSON.stringify(req.body));
+  app.patch("/customer", function(req, res) {
     if(!req.body.username) {
       return res.send({"status": "error", "message": "no username"});
     } else if(!req.body.data) {
       return res.send({"status": "error", "message": "no data"});
-    } else if(req.body.username != dummyData.username) {
-      return res.send({"status": "error", "message": "username does not match"});
     } else {
-      return res.send(dummyData);
+      return res.send(JSON.stringify(req.body));
     }
   });
 };
