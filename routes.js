@@ -64,6 +64,11 @@ var routes = function(app) {
       return res.send(confirmation);
     }
   });
+  
+  //learn
+  app.get("/info", function(req, res) {
+      return res.send({"hello":"You asked for some info!!!"});
+  });
 };
  
 module.exports = routes;
