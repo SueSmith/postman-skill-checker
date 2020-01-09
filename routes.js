@@ -67,7 +67,7 @@ var routes = function(app) {
   
   //learn
   app.get("/info", function(req, res) {
-      return res.send({"There you go":"Here's the info you asked for!!!"});
+      return res.send({"Hello":"Here's the info you asked for!!!"});
   });
 };
  
