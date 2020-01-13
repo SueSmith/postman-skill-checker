@@ -69,28 +69,30 @@ var routes = function(app) {
 
   //learn
   app.get("/info", function(req, res) {
-    if (req.path.category)
-      return res.send({
-        message: "You sent a path parameter!",
-        next:
-          "Now try changing the method - currently GET before the addresss - change it to POST and click Send again."
-      });
     if (req.query.id)
       return res.send({
         message:
           "You sent a query string parameter! It indicates you want some data associated with an id of 1.",
         next:
-          "Now try adding a path parameter. Enter '/:category' before '/info' in the address. "+
+          "Now try adding a path parameter. Enter /:category before /info in the address. "+
           "In Params, enter a value for the category row and click Send again."
       });
     else
       return res.send({
         message: "You sent a request!!!",
         next:
-          "Now try a parameter  - add '?id=1' to the end of the address after '/info' and click Send again."
+          "Now try a parameter  - add ?id=1 to the end of the address after /info and click Send again."
       });
   });
-  app.post("/info", function(req, res) {
+  app.get("/:category/info", function(req, res){
+    if (req.path.category)
+      return res.send({
+        message: "You sent a path parameter!",
+        next:
+          "Now try changing the method - currently GET before the addresss - change it to POST and click Send again."
+      });
+  });
+  app.post("/:category/info", function(req, res) {
     if (req.body.data)
       return res.send({ message: "You sent body data!", next: "Now try..." });
     else
@@ -99,8 +101,8 @@ var routes = function(app) {
           "You sent a post request! Post requests let you pass data to the API.",
         next:
           "Now try adding some data. " +
-          "Open the Body tab under the address, type something into the empty pane, " +
-          "and make sure Text is selected from the dropdown above it."
+          "Open the Body tab under the address, enter {\'data\':\'hello\'} into the empty pane, " +
+          "and make sure JSON is selected from the dropdown above it."
       });
   });
 };
