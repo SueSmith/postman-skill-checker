@@ -85,7 +85,7 @@ var routes = function(app) {
       });
   });
   app.get("/:category/info", function(req, res){
-    if (req.path.category)
+    
       return res.send({
         message: "You sent a path parameter!",
         next:
@@ -101,8 +101,9 @@ var routes = function(app) {
           "You sent a post request! Post requests let you pass data to the API.",
         next:
           "Now try adding some data. " +
-          "Open the Body tab under the address, enter {\'data\':\'hello\'} into the empty pane, " +
-          "and make sure JSON is selected from the dropdown above it."
+          "Open the Body tab under the address, select Raw, and enter "+
+          JSON.stringify({data:"hello"}) +" into the empty pane, " +
+          "making sure JSON is selected from the dropdown."
       });
   });
 };
