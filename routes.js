@@ -68,13 +68,25 @@ var routes = function(app) {
   //learn
   app.get("/info", function(req, res) {
       if(req.query.id)
-        return res.send({"message": "Yay you sent a query string parameter!"});
+        return res.send({"message": "You sent a query string parameter! It indicates you want some data associated with an id of 1.",
+                        "next": "Now try changing the method - currently GET before the addresss - change it to POST and click Send again."});
       else
         return res.send({"message":
-          "Here's the info you asked for!!! "+
-          "Now try adding a parameter to your request. "+
-          "Add '?id=1' to the end of the address so it ends '/info?id=1'",
-          "next": "Now try blah..."
+          "You sent a request!!!",
+          "next": "Now try a parameter  - add '?id=1' to the end of the address after '/info' and click Send again."
+        });
+  });
+  //learn
+  app.post("/info", function(req, res) {
+      if(req.query.id)
+        return res.send({"message": "You sent a post request! Post requests let you pass data to the API.",
+                        "next": "Now try adding some data. "+
+                           "Open the Body tab under the address, type something into the empty pane, "+
+                           "and make sure Text is selected from the dropdown above it."});
+      else
+        return res.send({"message":
+          "You sent a request!!!",
+          "next": "Now try a parameter  - add '?id=1' to the end of the address after '/info' and click Send again."
         });
   });
 };
