@@ -73,7 +73,8 @@ var routes = function(app) {
         return res.send({"message":
           "Here's the info you asked for!!! "+
           "Now try adding a parameter to your request. "+
-          "Add '?id=1' to the end of the address so it ends '/info?id=1'"
+          "Add '?id=1' to the end of the address so it ends '/info?id=1'",
+          "next": "Now try blah..."
         });
   });
 };
