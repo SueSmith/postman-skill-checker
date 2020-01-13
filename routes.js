@@ -67,7 +67,14 @@ var routes = function(app) {
   
   //learn
   app.get("/info", function(req, res) {
-      return res.send({"Hello":"Here's the info you asked for!!!"});
+      if(req.query.id)
+        return res.send({"message": "Yay you sent a query string parameter!"});
+      else
+        return res.send({"message":
+          "Here's the info you asked for!!! "+
+          "Now try adding a parameter to your request. "+
+          "Add '?id=1' to the end of the address so it ends '/info?id=1'"
+        });
   });
 };
  
