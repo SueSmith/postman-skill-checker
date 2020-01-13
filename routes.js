@@ -75,7 +75,7 @@ var routes = function(app) {
           "You sent a query string parameter! It indicates you want some data associated with an id of 1.",
         next:
           "Now try adding a path parameter. Enter /:category before /info in the address. "+
-          "In Params, enter a value for the category row and click Send again."
+          "In Params, enter a value for the category row (e.g. 'hats' and click Send again."
       });
     else
       return res.send({
