@@ -102,7 +102,7 @@ var routes = function(app) {
         next:
           "Now try adding some data. " +
           "Open the Body tab under the address, select Raw, and enter "+
-          JSON.stringify({data:"hello"}) +" into the empty pane, " +
+          "{'data':'hello'} into the empty pane, " +
           "making sure JSON is selected from the dropdown."
       });
   });
