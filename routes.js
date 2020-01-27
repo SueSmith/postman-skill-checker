@@ -106,6 +106,12 @@ var routes = function(app) {
           "making sure JSON is selected from the dropdown."
       });
   });
+  app.get("/lesson", function(req, res) {
+    let responseData = new Object();     
+    responseData["message"] = "Click Visualize to see more info!";
+    responseData["information"] = "You sent a GET request...";
+    return res.send(responseData);
+  });
 };
 
 module.exports = routes;
