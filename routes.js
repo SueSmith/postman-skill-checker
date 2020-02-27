@@ -21,6 +21,7 @@ var routes = function(app) {
       return res.send({ status: "error", message: "no id" });
     } else {
       let responseData = new Object();
+      responseData["id"] = 1;
       responseData["name"] = "Blanche Devereux";
       responseData["type"] = "Individual";
       return res.send(responseData);
@@ -31,10 +32,12 @@ var routes = function(app) {
   app.get("/customers", function(req, res) {
     let responseData = new Array();
     let indivCust = new Object();
+    indivCust["id"] = 1;
     indivCust["name"] = "Blanche Devereux";
     indivCust["type"] = "Individual";
     responseData[0] = indivCust;
     let compCust = new Object();
+    compCust["id"] = 2;
     compCust["name"] = "Shady Pines";
     compCust["type"] = "Company";
     responseData[1] = compCust;
