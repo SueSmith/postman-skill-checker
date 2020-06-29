@@ -44,6 +44,10 @@ var routes = function(app) {
     return res.send(responseData);
   });
 
+  app.get("/picture", function(req, res) {
+    res.status(200).json({"pic":"<svg width='100' height='100'><circle cx='50' cy='50' r='40' stroke='green' stroke-width='4' fill='yellow' /></svg>"});
+  });
+
   //add new user
   app.post("/customer", function(req, res) {
     if (!req.body.name) {
