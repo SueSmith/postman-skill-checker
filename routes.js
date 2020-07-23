@@ -20,11 +20,11 @@ var routes = function(app) {
     if (!req.query.id) {
       return res.send({ status: "error", message: "no id" });
     } else {
-      let responseData = new Object();
-      responseData["id"] = 1;
-      responseData["name"] = "Blanche Devereux";
-      responseData["type"] = "Individual";
-      res.status(200).json({ responseData });
+      res.status(200).json({
+        id: 1,
+        name: "Blanche Devereux",
+        type: "Individual"
+      });
     }
   });
 
@@ -49,28 +49,20 @@ var routes = function(app) {
     const apiSecret = req.get("admin_key");
     if (!apiSecret)
       res.status(401).json({ error: "You need to supply an auth key!" });
-    else if (!req.body.name) {
+    else if (!req.body.name)
       return res.send({ status: "error", message: "no name" });
-    } else if (!req.body.type) {
+    else if (!req.body.type)
       return res.send({ status: "error", message: "no type" });
-    } else {
-      let confirmation = new Object();
-      confirmation["status"] = "customer added";
-      return res.send(confirmation);
-    }
+    else res.status(201).json({ status: "customer added" });
   });
 
   //update user
   app.patch("/customer", function(req, res) {
-    if (!req.body.name) {
+    if (!req.body.name)
       return res.send({ status: "error", message: "no name" });
-    } else if (!req.body.type) {
+    else if (!req.body.type)
       return res.send({ status: "error", message: "no type" });
-    } else {
-      let confirmation = new Object();
-      confirmation["status"] = "customer updated";
-      return res.send(confirmation);
-    }
+    else res.status(201).json({ status: "customer updated" });
   });
 };
 
