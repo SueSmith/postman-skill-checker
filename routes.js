@@ -24,29 +24,32 @@ var routes = function(app) {
       responseData["id"] = 1;
       responseData["name"] = "Blanche Devereux";
       responseData["type"] = "Individual";
-      return res.send(responseData);
+      res.status(200).json({ responseData });
     }
   });
 
   //get all users
   app.get("/customers", function(req, res) {
-    let responseData = new Array();
-    let indivCust = new Object();
-    indivCust["id"] = 1;
-    indivCust["name"] = "Blanche Devereux";
-    indivCust["type"] = "Individual";
-    responseData[0] = indivCust;
-    let compCust = new Object();
-    compCust["id"] = 2;
-    compCust["name"] = "Shady Pines";
-    compCust["type"] = "Company";
-    responseData[1] = compCust;
-    return res.send(responseData);
+    res.status(200).json(
+      {
+        id: 1,
+        name: "Blanche Devereux",
+        type: "Individual"
+      },
+      {
+        id: 2,
+        name: "Shady Pines",
+        type: "Company"
+      }
+    );
   });
 
   //add new user
   app.post("/customer", function(req, res) {
-    if (!req.body.name) {
+    const apiSecret = req.get("admin_key");
+    if (!apiSecret)
+      res.status(401).json({ error: "You need to supply an auth key!" });
+    else if (!req.body.name) {
       return res.send({ status: "error", message: "no name" });
     } else if (!req.body.type) {
       return res.send({ status: "error", message: "no type" });
@@ -69,7 +72,6 @@ var routes = function(app) {
       return res.send(confirmation);
     }
   });
-
 };
 
 module.exports = routes;
