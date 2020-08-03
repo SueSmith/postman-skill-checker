@@ -187,10 +187,33 @@ var routes = function(app) {
             ]
           }
         });
-    else if (!req.body.name)
-      return res.send({ status: "error", message: "no name" });
-    else if (!req.body.type)
-      return res.send({ status: "error", message: "no type" });
+    else if (!req.body.name || !req.body.type)
+      res.status(400).json({
+          welcome:
+            "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+            "readable view of the response.",
+          tutorial: {
+            title: "Your request is incomplete! ✋",
+            intro: "This endpoint requires body data representing the new customer.",
+            steps: [
+              {
+                note:
+                  "In **Body** select **raw** and choose **JSON** instead of `Text` in the drop-down list. Enter the following JSON data "+
+                    "including the enclosing curly braces:",
+                raw_data: {
+                  name: "Dorothy Zpornak",
+                  type: "Individual"
+                }
+              }
+            ],
+            next: [
+              {
+                step:
+                  "With your body data in place, click **Send** again."
+              }
+            ]
+          }
+        });
     else res.status(201).json({ status: "customer added" });
   });
 
