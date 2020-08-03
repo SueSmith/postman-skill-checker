@@ -41,18 +41,17 @@ var routes = function(app) {
           "readable view of the response.",
         tutorial: {
           title: "Your request is missing some info! 😕",
-          intro:
-            "Your request for a specific customer needs.",
+          intro: "This endpoint requires you to specify a customer.",
           steps: [
             {
               note:
-                "The API returned JSON data including an array of customers:"
+                "In **Params** add `id` in the **Key** column, and `1` as the value."
             }
           ],
           next: [
             {
               step:
-                "Now open the next request in the collection `Get one customer` and click **Send**."
+                "With your parameter in place (you'll see `?id=1` added to the request address), click **Send** again."
             }
           ]
         }
@@ -92,7 +91,7 @@ var routes = function(app) {
             next: [
               {
                 step:
-                  "Now open the next request in the collection `Get one customer` and click **Send**."
+                  "Now open the next request in the collection `POST Add new customer` and click **Send**."
               }
             ]
           }
@@ -103,19 +102,18 @@ var routes = function(app) {
             "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
             "readable view of the response.",
           tutorial: {
-            title: "You sent a request! 🚀",
-            intro:
-              "Your request used `GET` method and sent to the `/customers` path.",
+            title: "Your request contains invalid info! 😕",
+            intro: "This endpoint requires the `id` for a valid customer.",
             steps: [
               {
                 note:
-                  "The API returned JSON data including an array of customers:"
+                  "In **Params** add `id` in the **Key** column, and `1` as the value."
               }
             ],
             next: [
               {
                 step:
-                  "Now open the next request in the collection `Get one customer` and click **Send**."
+                  "With your parameter in place (you'll see `?id=1` added to the request address), click **Send** again."
               }
             ]
           }
@@ -156,7 +154,7 @@ var routes = function(app) {
         next: [
           {
             step:
-              "Now open the next request in the collection `Get one customer` and click **Send**."
+              "Now open the next `GET` request in the collection `Get one customer` and click **Send**."
           }
         ]
       }
@@ -167,7 +165,28 @@ var routes = function(app) {
   app.post("/customer", function(req, res) {
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
-      res.status(401).json({ error: "You need to supply an auth key!" });
+      res.status(401).json({
+          welcome:
+            "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+            "readable view of the response.",
+          tutorial: {
+            title: "Your request is unauthorized! 🚫",
+            intro: "This endpoint requires authentication.",
+            steps: [
+              {
+                note:
+                  "In **Auth** select **API Key** from the drop-down, enter `auth_key` as the **Key** and any text you like as the **Value**. "+
+                    "Make sure you are adding to the **Header**."
+              }
+            ],
+            next: [
+              {
+                step:
+                  "With your auth key in place, click **Send** again."
+              }
+            ]
+          }
+        });
     else if (!req.body.name)
       return res.send({ status: "error", message: "no name" });
     else if (!req.body.type)
