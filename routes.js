@@ -450,10 +450,8 @@ var routes = function(app) {
           next: [
             {
               step:
-                "You completed the APIs 101 collection! 🚀"
-            },
-            {
-              step:
+                "🚀 You completed the APIs 101 collection! Check out another template for further learning—it walks you through remixing your "+
+                  "own API!<br/><br/>[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/cf574a217e39178d2c20)"
             }
           ]
         }
