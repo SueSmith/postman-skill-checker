@@ -36,53 +36,91 @@ var routes = function(app) {
   app.get("/customer", function(req, res) {
     if (!req.query.id) {
       res.status(404).json({
-        "welcome": "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more "+
-        "readable view of the response.",
-    "tutorial": {
-        "title": "You sent a request! 🚀",
-        "intro": "Your request used `GET` method and sent to the `/customers` path.",
-        "steps": [
+        welcome:
+          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "readable view of the response.",
+        tutorial: {
+          title: "Your request is missing some info! 😕",
+          intro:
+            "Your request for a specific customer needs.",
+          steps: [
             {
-                "note": "The API returned JSON data including an array of customers:"
+              note:
+                "The API returned JSON data including an array of customers:"
             }
-        ],
-        "next": [
+          ],
+          next: [
             {
-                "step": "Now open the next request in the collection `Get one customer` and click **Send**."
+              step:
+                "Now open the next request in the collection `Get one customer` and click **Send**."
             }
-        ]
-    }
+          ]
+        }
       });
     } else {
-      var customer = db.get('customers')
-  .find({ id: ""+req.query.id })
-  .value();/*.map(r => {
-        return { id: r.id, name: r.name, type: r.type };
-      });*/
-      res.status(200).json({
-        "welcome": "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more "+
-        "readable view of the response.",
-    "data": {
-        "customers": customer
-    },
-    "tutorial": {
-        "title": "You sent a request! 🚀",
-        "intro": "Your request used `GET` method and sent to the `/customers` path.",
-        "steps": [
-            {
-                "note": "The API returned JSON data including an array of customers:",
-                "raw_data": {
-                    "customers": customer
+      var customerRecord = db
+        .get("customers")
+        .find({ id: parseInt(req.query.id) })
+        .value();
+      console.log(customerRecord);
+      if (customerRecord) {
+        var customer = {
+          id: customerRecord.id,
+          name: customerRecord.name,
+          type: customerRecord.type
+        };
+        res.status(200).json({
+          welcome:
+            "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+            "readable view of the response.",
+          data: {
+            customer: customer
+          },
+          tutorial: {
+            title: "You sent a request with a query parameter! 🎉",
+            intro:
+              "Your request used the `id` parameter to retrieve a specific customer.",
+            steps: [
+              {
+                note:
+                  "The API returned a JSON object representing the customer:",
+                raw_data: {
+                  customer: customer
                 }
-            }
-        ],
-        "next": [
-            {
-                "step": "Now open the next request in the collection `Get one customer` and click **Send**."
-            }
-        ]
-    }
-      });
+              }
+            ],
+            next: [
+              {
+                step:
+                  "Now open the next request in the collection `Get one customer` and click **Send**."
+              }
+            ]
+          }
+        });
+      } else {
+        res.status(404).json({
+          welcome:
+            "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+            "readable view of the response.",
+          tutorial: {
+            title: "You sent a request! 🚀",
+            intro:
+              "Your request used `GET` method and sent to the `/customers` path.",
+            steps: [
+              {
+                note:
+                  "The API returned JSON data including an array of customers:"
+              }
+            ],
+            next: [
+              {
+                step:
+                  "Now open the next request in the collection `Get one customer` and click **Send**."
+              }
+            ]
+          }
+        });
+      }
     }
   });
 
@@ -97,29 +135,32 @@ var routes = function(app) {
         return { id: r.id, name: r.name, type: r.type };
       });
     res.status(200).json({
-    "welcome": "Welcome to APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more "+
+      welcome:
+        "Welcome to APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
         "readable view of the response.",
-    "data": {
-        "customers": customers
-    },
-    "tutorial": {
-        "title": "You sent a request! 🚀",
-        "intro": "Your request used `GET` method and sent to the `/customers` path.",
-        "steps": [
-            {
-                "note": "The API returned JSON data including an array of customers:",
-                "raw_data": {
-                    "customers": customers
-                }
+      data: {
+        customers: customers
+      },
+      tutorial: {
+        title: "You sent a request! 🚀",
+        intro:
+          "Your request used `GET` method and sent to the `/customers` path.",
+        steps: [
+          {
+            note: "The API returned JSON data including an array of customers:",
+            raw_data: {
+              customers: customers
             }
+          }
         ],
-        "next": [
-            {
-                "step": "Now open the next request in the collection `Get one customer` and click **Send**."
-            }
+        next: [
+          {
+            step:
+              "Now open the next request in the collection `Get one customer` and click **Send**."
+          }
         ]
-    }
-});
+      }
+    });
   });
 
   //add new user
