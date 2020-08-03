@@ -30,7 +30,7 @@ var routes = function(app) {
 
   //get all users
   app.get("/customers", function(req, res) {
-    res.status(200).json(
+    res.status(200).json([
       {
         id: 1,
         name: "Blanche Devereux",
@@ -41,7 +41,7 @@ var routes = function(app) {
         name: "Shady Pines",
         type: "Company"
       }
-    );
+    ]);
   });
 
   //add new user
