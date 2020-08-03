@@ -44,8 +44,37 @@ var routes = function(app) {
   //get all users
   app.get("/customers", function(req, res) {
     console.log(req.get("user-id"));
-    var customers = db.get("customers").filter(c => (c.admin === "postman") || c.admin === req.get("user-id")).value();
-    res.status(200).json(customers);
+    var customers = db
+      .get("customers")
+      .filter(c => c.admin === "postman" || c.admin === req.get("user-id"))
+      .value()
+      .map(r => {
+        return { id: r.id, name: r.name, type: r.type };
+      });
+    res.status(200).json({
+    "welcome": "Welcome to APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more "+
+        "readable view of the response.",
+    "data": {
+        "customers": customers
+    },
+    "tutorial": {
+        "title": "You sent a request! 🚀",
+        "intro": "Your request used `GET` method and sent to the `/customers` path.",
+        "steps": [
+            {
+                "note": "This is the JSON data the API returned. It includes an array of customers:",
+                "raw_data": {
+                    "customers": customers
+                }
+            }
+        ],
+        "next": [
+            {
+                "step": "Now open the next request in the collection `Get customer` and click **Send**."
+            }
+        ]
+    }
+});
   });
 
   //add new user
@@ -68,52 +97,55 @@ var routes = function(app) {
       return res.send({ status: "error", message: "no type" });
     else res.status(201).json({ status: "customer updated" });
   });
-  
-  
-//protect everything after this by checking for the secret
-app.use((req, res, next) => {
-  const apiSecret = req.get("admin_key");
-  if (!apiSecret || apiSecret !== process.env.SECRET) {
-    res.status(401).json({error: "Unauthorized"});
-  } else {
-    next();
-  }
-});
 
-// removes entries from users and populates it with default users
-app.get("/reset", (request, response) => {
-  // removes all entries from the collection
-  db.get("customers")
-    .remove()
-    .write();
-  console.log("Database cleared");
-
-  // default users inserted in the database
-  var customers = [
-    { id: 1, name: "Blanche Devereux", type: "Individual", admin: "postman" },
-    { id: 2, name: "Rose Nylund", type: "Individual", admin: "postman" },
-    { id: 3, name: "Shady Pines", type: "Company", admin: "postman" }
-  ];
-
-  customers.forEach(customer => {
-    db.get("customers")
-      .push({ id: customer.id, name: customer.name, type: customer.type, admin: customer.admin })
-      .write();
+  //protect everything after this by checking for the secret
+  app.use((req, res, next) => {
+    const apiSecret = req.get("admin_key");
+    if (!apiSecret || apiSecret !== process.env.SECRET) {
+      res.status(401).json({ error: "Unauthorized" });
+    } else {
+      next();
+    }
   });
-  console.log("Default customers added");
-  response.redirect("/");
-});
 
-// removes all entries from the collection
-app.get("/clear", (request, response) => {
+  // removes entries from users and populates it with default users
+  app.get("/reset", (request, response) => {
+    // removes all entries from the collection
+    db.get("customers")
+      .remove()
+      .write();
+    console.log("Database cleared");
+
+    // default users inserted in the database
+    var customers = [
+      { id: 1, name: "Blanche Devereux", type: "Individual", admin: "postman" },
+      { id: 2, name: "Rose Nylund", type: "Individual", admin: "postman" },
+      { id: 3, name: "Shady Pines", type: "Company", admin: "postman" }
+    ];
+
+    customers.forEach(customer => {
+      db.get("customers")
+        .push({
+          id: customer.id,
+          name: customer.name,
+          type: customer.type,
+          admin: customer.admin
+        })
+        .write();
+    });
+    console.log("Default customers added");
+    response.redirect("/");
+  });
+
   // removes all entries from the collection
-  db.get("customers")
-    .remove()
-    .write();
-  console.log("Database cleared");
-  response.redirect("/");
-});
+  app.get("/clear", (request, response) => {
+    // removes all entries from the collection
+    db.get("customers")
+      .remove()
+      .write();
+    console.log("Database cleared");
+    response.redirect("/");
+  });
 };
-
 
 module.exports = routes;
