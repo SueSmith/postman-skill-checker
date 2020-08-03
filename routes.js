@@ -35,12 +35,53 @@ var routes = function(app) {
   //get request with query param
   app.get("/customer", function(req, res) {
     if (!req.query.id) {
-      return res.send({ status: "error", message: "no id" });
+      res.status(404).json({
+        "welcome": "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more "+
+        "readable view of the response.",
+    "tutorial": {
+        "title": "You sent a request! 🚀",
+        "intro": "Your request used `GET` method and sent to the `/customers` path.",
+        "steps": [
+            {
+                "note": "The API returned JSON data including an array of customers:"
+            }
+        ],
+        "next": [
+            {
+                "step": "Now open the next request in the collection `Get one customer` and click **Send**."
+            }
+        ]
+    }
+      });
     } else {
+      var customer = db.get('customers')
+  .find({ id: ""+req.query.id })
+  .value();/*.map(r => {
+        return { id: r.id, name: r.name, type: r.type };
+      });*/
       res.status(200).json({
-        id: 1,
-        name: "Blanche Devereux",
-        type: "Individual"
+        "welcome": "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more "+
+        "readable view of the response.",
+    "data": {
+        "customers": customer
+    },
+    "tutorial": {
+        "title": "You sent a request! 🚀",
+        "intro": "Your request used `GET` method and sent to the `/customers` path.",
+        "steps": [
+            {
+                "note": "The API returned JSON data including an array of customers:",
+                "raw_data": {
+                    "customers": customer
+                }
+            }
+        ],
+        "next": [
+            {
+                "step": "Now open the next request in the collection `Get one customer` and click **Send**."
+            }
+        ]
+    }
       });
     }
   });
