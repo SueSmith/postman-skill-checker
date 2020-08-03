@@ -304,7 +304,7 @@ var routes = function(app) {
           steps: [
             {
               note:
-                "This requests includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace . " +
+                "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
                 "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
                 "`Get all customers` request. ***You can only update a customer you added.***"
             }
@@ -412,7 +412,7 @@ var routes = function(app) {
           steps: [
             {
               note:
-                "This requests includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace . " +
+                "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
                 "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
                 "`Get all customers` request. ***You can only remove a customer you added.***"
             }
@@ -428,11 +428,12 @@ var routes = function(app) {
     else {
       var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
       //check the record matches the user id
-      var custAdmin = db.get("customers").find({id: parseInt(req.params.cust_id)}).value().admin; console.log(custAdmin);
+      var custAdmin = db.get("customers").find({id: parseInt(req.params.cust_id)}).value().admin;
+      if(custAdmin==adminId){
       db.get("customers")
-        .remove({ id: req.params.cust_id })
+        .remove({ id: parseInt(req.params.cust_id) })
         .write();
-      res.status(201).json({
+      res.status(200).json({
         welcome:
           "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
@@ -449,11 +450,41 @@ var routes = function(app) {
           next: [
             {
               step:
-                "Next open the `DEL Remove customer` request and click **Send**."
+                "You completed the APIs 101 collection! 🚀"
+            },
+            {
+              step:
             }
           ]
         }
       });
+    }
+      else {
+        res.status(400).json({
+        welcome:
+          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "readable view of the response.",
+        tutorial: {
+          title: "Your request is invalid! ⛔",
+          intro:
+            "You can only remove customers you added using the `POST` method during the current session.",
+          steps: [
+            {
+              note:
+                "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
+                "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
+                "`Get all customers` request. ***You can only remove a customer you added.***"
+            }
+          ],
+          next: [
+            {
+              step:
+                "With the ID parameter for a customer _you added_ during this session in place, click **Send** again."
+            }
+          ]
+        }
+      });
+      }
     }
   });
 
