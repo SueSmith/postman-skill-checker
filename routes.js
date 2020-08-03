@@ -66,7 +66,7 @@ var routes = function(app) {
         "intro": "Your request used `GET` method and sent to the `/customers` path.",
         "steps": [
             {
-                "note": "This is the JSON data the API returned. It includes an array of customers:",
+                "note": "The API returned JSON data including an array of customers:",
                 "raw_data": {
                     "customers": customers
                 }
