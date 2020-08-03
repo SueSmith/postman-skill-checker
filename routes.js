@@ -1,3 +1,7 @@
+/*
+Hello! This is a learning API for the Postman APIs 101 webinar. Check out the template: 
+*/
+
 var xml = require("xml");
 
 var low = require("lowdb");
@@ -70,7 +74,7 @@ var routes = function(app) {
         ],
         "next": [
             {
-                "step": "Now open the next request in the collection `Get customer` and click **Send**."
+                "step": "Now open the next request in the collection `Get one customer` and click **Send**."
             }
         ]
     }
@@ -79,7 +83,7 @@ var routes = function(app) {
 
   //add new user
   app.post("/customer", function(req, res) {
-    const apiSecret = req.get("admin_key");
+    const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({ error: "You need to supply an auth key!" });
     else if (!req.body.name)
@@ -91,6 +95,9 @@ var routes = function(app) {
 
   //update user
   app.patch("/customer", function(req, res) {
+    const apiSecret = req.get("auth_key");
+    if (!apiSecret)
+      res.status(401).json({ error: "You need to supply an auth key!" });
     if (!req.body.name)
       return res.send({ status: "error", message: "no name" });
     else if (!req.body.type)
