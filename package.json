@@ -10,8 +10,7 @@
     "express": "^4.12.4",
     "body-parser": "1.14.2",
     "xml": "^1.0.1",
-    "lowdb": "^1.0.0",
-    "shortid": "^2.2.15"
+    "lowdb": "^1.0.0"
   },
   "engines": {
     "node": "6.x"

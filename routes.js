@@ -408,13 +408,13 @@ var routes = function(app) {
         tutorial: {
           title: "Your request is incomplete! ✋",
           intro:
-            "This endpoint requires an ID representing the customer to update.",
+            "This endpoint requires an ID representing the customer to remove.",
           steps: [
             {
               note:
                 "This requests includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace . " +
                 "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
-                "`Get all customers` request. ***You can only update a customer you added.***"
+                "`Get all customers` request. ***You can only remove a customer you added.***"
             }
           ],
           next: [
@@ -427,6 +427,8 @@ var routes = function(app) {
       });
     else {
       var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
+      //check the record matches the user id
+      var custAdmin = db.get("customers").find({id: parseInt(req.params.cust_id)}).value().admin; console.log(custAdmin);
       db.get("customers")
         .remove({ id: req.params.cust_id })
         .write();
@@ -435,13 +437,13 @@ var routes = function(app) {
           "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
-          title: "You updated a customer! ✅",
+          title: "You deleted a customer! 🏆",
           intro: "Your customer was updated in the database.",
           steps: [
             {
               note:
                 "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
-                "you should see your updated customer in the array!"
+                "you should see that your deleted customer was removed from the array!"
             }
           ],
           next: [
@@ -505,7 +507,7 @@ var routes = function(app) {
         })
         .write();
     });
-    db.update("count", customers.length).write();
+    db.set("count", customers.length).write();
     console.log("Default customers added");
     response.redirect("/");
   });
