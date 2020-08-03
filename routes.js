@@ -12,9 +12,24 @@ const shortid = require("shortid");
 
 db.defaults({
   customers: [
-    { id: "123abc", name: "Blanche Devereux", type: "Individual", admin: "postman" },
-    { id: shortid.generate(), name: "Rose Nylund", type: "Individual", admin: "postman" },
-    { id: shortid.generate(), name: "Shady Pines", type: "Company", admin: "postman" }
+    {
+      id: "123abc",
+      name: "Blanche Devereux",
+      type: "Individual",
+      admin: "postman"
+    },
+    {
+      id: shortid.generate(),
+      name: "Rose Nylund",
+      type: "Individual",
+      admin: "postman"
+    },
+    {
+      id: shortid.generate(),
+      name: "Shady Pines",
+      type: "Company",
+      admin: "postman"
+    }
   ]
 }).write();
 
@@ -46,8 +61,8 @@ var routes = function(app) {
           steps: [
             {
               note:
-                "In **Params** add `id` in the **Key** column, and one of the `id` values from the customer list as the **Value**, "+
-                  "for example `123abc`."
+                "In **Params** add `id` in the **Key** column, and one of the `id` values from the customer list as the **Value**, " +
+                "for example `123abc`."
             }
           ],
           next: [
@@ -226,32 +241,32 @@ var routes = function(app) {
         })
         .write();
       res.status(201).json({
-      welcome:
-        "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+        welcome:
+          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
-      tutorial: {
-        title: "You added a new customer! 🏅",
-        intro:
-          "Your new customer was added to the database.",
-        steps: [
-          {
-            note: "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—"+
-              "you should see your new addition in the array!"
-          }
-        ],
-        next: [
-          {
-            step:
-              "Next open the `PUT Update customer` request and click **Send**."
-          }
-        ]
-      }
-    });
+        tutorial: {
+          title: "You added a new customer! 🏅",
+          intro: "Your new customer was added to the database.",
+          steps: [
+            {
+              note:
+                "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
+                "you should see your new addition in the array!"
+            }
+          ],
+          next: [
+            {
+              step:
+                "Next open the `PUT Update customer` request and click **Send**."
+            }
+          ]
+        }
+      });
     }
   });
 
   //update user
-  app.put("/customer", function(req, res) {
+  app.put("/customer/:cust_id", function(req, res) {
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
@@ -275,7 +290,7 @@ var routes = function(app) {
           ]
         }
       });
-    else if (!req.query.id)
+    else if (req.params.cust_id == "placeholder")
       res.status(400).json({
         welcome:
           "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
@@ -287,14 +302,15 @@ var routes = function(app) {
           steps: [
             {
               note:
-                "Include a path parameter by adding `/:customer_id` to the end of the request address. Your parameter will appear in **Params**. "+
-                "For the value copy the `id` of a customer you added when you sent the "+
-                  "`POST` request—copy it from the response in the `Get all customers` request. ***You can only update a customer you added.***"
+                "This requests includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace . " +
+                "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
+                "`Get all customers` request. ***You can only update a customer you added.***"
             }
           ],
           next: [
             {
-              step: "With your customer ID parameter in place, click **Send** again."
+              step:
+                "With your customer ID parameter in place, click **Send** again."
             }
           ]
         }
@@ -314,7 +330,7 @@ var routes = function(app) {
                 "In **Body** select **raw** and choose **JSON** instead of `Text` in the drop-down list. Enter the following JSON data " +
                 "including the enclosing curly braces:",
               raw_data: {
-                name: "Dorothy Zpornak",
+                name: "Sophia Petrillo",
                 type: "Individual"
               }
             }
@@ -329,35 +345,140 @@ var routes = function(app) {
     else {
       var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
       db.get("customers")
-        .push({
-          id: shortid.generate(),
-          name: req.body.name,
-          type: req.body.type,
-          admin: adminId
-        })
+        .find({ id: req.params.cust_id })
+        .assign({ name: req.body.name, type: req.body.type, admin: adminId })
         .write();
       res.status(201).json({
-      welcome:
-        "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+        welcome:
+          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
-      tutorial: {
-        title: "You added a new customer! 🏅",
-        intro:
-          "Your new customer was added to the database.",
-        steps: [
-          {
-            note: "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—"+
-              "you should see your new addition in the array!"
-          }
-        ],
-        next: [
-          {
-            step:
-              "Next open the `PUT Update customer` request and click **Send**."
-          }
-        ]
-      }
-    });
+        tutorial: {
+          title: "You updated a customer! ✅",
+          intro: "Your customer was updated in the database.",
+          steps: [
+            {
+              note:
+                "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
+                "you should see your updated customer in the array!"
+            }
+          ],
+          next: [
+            {
+              step:
+                "Next open the `DEL Remove customer` request and click **Send**."
+            }
+          ]
+        }
+      });
+    }
+  });
+  
+  
+  //update user
+  app.delete("/customer/:cust_id", function(req, res) {
+    const apiSecret = req.get("auth_key");
+    if (!apiSecret)
+      res.status(401).json({
+        welcome:
+          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "readable view of the response.",
+        tutorial: {
+          title: "Your request is unauthorized! 🚫",
+          intro: "This endpoint requires authentication.",
+          steps: [
+            {
+              note:
+                "In **Auth** select **API Key** from the drop-down, enter `auth_key` as the **Key** and any text you like as the **Value**. " +
+                "Make sure you are adding to the **Header**."
+            }
+          ],
+          next: [
+            {
+              step: "With your auth key in place, click **Send** again."
+            }
+          ]
+        }
+      });
+    else if (req.params.cust_id == "placeholder")
+      res.status(400).json({
+        welcome:
+          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "readable view of the response.",
+        tutorial: {
+          title: "Your request is incomplete! ✋",
+          intro:
+            "This endpoint requires an ID representing the customer to update.",
+          steps: [
+            {
+              note:
+                "This requests includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace . " +
+                "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
+                "`Get all customers` request. ***You can only update a customer you added.***"
+            }
+          ],
+          next: [
+            {
+              step:
+                "With your customer ID parameter in place, click **Send** again."
+            }
+          ]
+        }
+      });
+    else if (!req.body.name || !req.body.type)
+      res.status(400).json({
+        welcome:
+          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "readable view of the response.",
+        tutorial: {
+          title: "Your request is incomplete! ✋",
+          intro:
+            "This endpoint requires body data representing the new customer.",
+          steps: [
+            {
+              note:
+                "In **Body** select **raw** and choose **JSON** instead of `Text` in the drop-down list. Enter the following JSON data " +
+                "including the enclosing curly braces:",
+              raw_data: {
+                name: "Sophia Petrillo",
+                type: "Individual"
+              }
+            }
+          ],
+          next: [
+            {
+              step: "With your body data in place, click **Send** again."
+            }
+          ]
+        }
+      });
+    else {
+      var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
+      db.get("customers")
+        .find({ id: req.params.cust_id })
+        .assign({ name: req.body.name, type: req.body.type, admin: adminId })
+        .write();
+      res.status(201).json({
+        welcome:
+          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "readable view of the response.",
+        tutorial: {
+          title: "You updated a customer! ✅",
+          intro: "Your customer was updated in the database.",
+          steps: [
+            {
+              note:
+                "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
+                "you should see your updated customer in the array!"
+            }
+          ],
+          next: [
+            {
+              step:
+                "Next open the `DEL Remove customer` request and click **Send**."
+            }
+          ]
+        }
+      });
     }
   });
 
@@ -381,9 +502,24 @@ var routes = function(app) {
 
     // default users inserted in the database
     var customers = [
-      { id: "123abc", name: "Blanche Devereux", type: "Individual", admin: "postman" },
-      { id: shortid.generate(), name: "Rose Nylund", type: "Individual", admin: "postman" },
-      { id: shortid.generate(), name: "Shady Pines", type: "Company", admin: "postman" }
+      {
+        id: "123abc",
+        name: "Blanche Devereux",
+        type: "Individual",
+        admin: "postman"
+      },
+      {
+        id: shortid.generate(),
+        name: "Rose Nylund",
+        type: "Individual",
+        admin: "postman"
+      },
+      {
+        id: shortid.generate(),
+        name: "Shady Pines",
+        type: "Company",
+        admin: "postman"
+      }
     ];
 
     customers.forEach(customer => {
