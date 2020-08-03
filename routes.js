@@ -1,5 +1,18 @@
 var xml = require("xml");
 
+var low = require("lowdb");
+var FileSync = require("lowdb/adapters/FileSync");
+var adapter = new FileSync(".data/db.json");
+var db = low(adapter);
+
+db.defaults({
+  customers: [
+    { id: 1, name: "Syd", humans: 17 },
+    { name: "Hamish", humans: 3 },
+    { name: "Peggy", humans: 5 }
+  ]
+}).write();
+
 var routes = function(app) {
   //
   // This route processes GET requests, by using the `get()` method in express, and we're looking for them on
@@ -30,6 +43,7 @@ var routes = function(app) {
 
   //get all users
   app.get("/customers", function(req, res) {
+    console.log(req.get("user-id"));
     res.status(200).json([
       {
         id: 1,
