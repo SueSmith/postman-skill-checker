@@ -8,12 +8,13 @@ var low = require("lowdb");
 var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
+const shortid = require("shortid");
 
 db.defaults({
   customers: [
-    { id: 1, name: "Blanche Devereux", type: "Individual", admin: "postman" },
-    { id: 2, name: "Rose Nylund", type: "Individual", admin: "postman" },
-    { id: 3, name: "Shady Pines", type: "Company", admin: "postman" }
+    { id: "123abc", name: "Blanche Devereux", type: "Individual", admin: "postman" },
+    { id: shortid.generate(), name: "Rose Nylund", type: "Individual", admin: "postman" },
+    { id: shortid.generate(), name: "Shady Pines", type: "Company", admin: "postman" }
   ]
 }).write();
 
@@ -45,13 +46,14 @@ var routes = function(app) {
           steps: [
             {
               note:
-                "In **Params** add `id` in the **Key** column, and `1` as the value."
+                "In **Params** add `id` in the **Key** column, and one of the `id` values from the customer list as the **Value**, "+
+                  "for example `123abc`."
             }
           ],
           next: [
             {
               step:
-                "With your parameter in place (you'll see `?id=1` added to the request address), click **Send** again."
+                "With your parameter in place (you'll see e.g. `?id=123abc` added to the request address), click **Send** again."
             }
           ]
         }
@@ -215,16 +217,36 @@ var routes = function(app) {
       });
     else {
       var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
-      var num = db.get("customers").value().length+1;
       db.get("customers")
         .push({
-          id: num,
+          id: shortid.generate(),
           name: req.body.name,
           type: req.body.type,
           admin: adminId
         })
         .write();
-      res.status(201).json({ status: "customer added" });
+      res.status(201).json({
+      welcome:
+        "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "readable view of the response.",
+      tutorial: {
+        title: "You added a new customer! 🏅",
+        intro:
+          "Your new customer was added to the database.",
+        steps: [
+          {
+            note: "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—"+
+              "you should see your new addition in the array!"
+          }
+        ],
+        next: [
+          {
+            step:
+              "Next open the `PUT Update customer` request and click **Send**."
+          }
+        ]
+      }
+    });
     }
   });
 
@@ -260,9 +282,9 @@ var routes = function(app) {
 
     // default users inserted in the database
     var customers = [
-      { id: 1, name: "Blanche Devereux", type: "Individual", admin: "postman" },
-      { id: 2, name: "Rose Nylund", type: "Individual", admin: "postman" },
-      { id: 3, name: "Shady Pines", type: "Company", admin: "postman" }
+      { id: "123abc", name: "Blanche Devereux", type: "Individual", admin: "postman" },
+      { id: shortid.generate(), name: "Rose Nylund", type: "Individual", admin: "postman" },
+      { id: shortid.generate(), name: "Shady Pines", type: "Company", admin: "postman" }
     ];
 
     customers.forEach(customer => {
