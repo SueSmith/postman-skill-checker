@@ -1,5 +1,5 @@
 /*
-Hello! This is a learning API for the Postman APIs 101 webinar. Check out the template: 
+Hello! This is a learning API for the Postman API 101 webinar. Check out the template: 
 */
 
 var xml = require("xml");
@@ -41,20 +41,19 @@ var routes = function(app) {
   // request to the console. The HTML you see in the browser is what `res.send()` is sending back.
   //
   app.get("/", function(req, res) {
-    res.send(
-      "<h1>REST API</h1><p>Oh, hi! There's not much to see here - view the code instead</p>" +
-        '<script src="https://button.glitch.me/button.js" data-style="glitch"></script><div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>'
-    );
+    res.status(200).json({message: "Use the API 101 template in Postman to learn API basics! Import the collection in Postman by clicking "+
+                         "New > Templates, and searching for 'API 101'. Open the first request in the collection and click Send."});
     console.log("Received GET");
   });
+  
+  var welcomeMsg = "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "readable view of the response.";
 
   //get request with query param
   app.get("/customer", function(req, res) {
     if (!req.query.id) {
       res.status(404).json({
-        welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "Your request is missing some info! 😕",
           intro: "This endpoint requires you to specify a customer.",
@@ -86,7 +85,7 @@ var routes = function(app) {
         };
         res.status(200).json({
           welcome:
-            "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+            "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
             "readable view of the response.",
           data: {
             customer: customer
@@ -115,7 +114,7 @@ var routes = function(app) {
       } else {
         res.status(404).json({
           welcome:
-            "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+            "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
             "readable view of the response.",
           tutorial: {
             title: "Your request contains invalid info! 😕",
@@ -123,13 +122,14 @@ var routes = function(app) {
             steps: [
               {
                 note:
-                  "In **Params** add `id` in the **Key** column, and `1` as the value (or the ID of a customer you see in the array when you send."
+                  "In **Params** add `id` in the **Key** column, and `1` as the value (or the ID of any customer you see in the array when you "+
+                    "send the `Get all customers` request)."
               }
             ],
             next: [
               {
                 step:
-                  "With your parameter in place (you'll see `?id=1` added to the request address), click **Send** again."
+                  "With your parameter in place (you'll see e.g. `?id=1` added to the request address), click **Send** again."
               }
             ]
           }
@@ -150,7 +150,7 @@ var routes = function(app) {
       });
     res.status(200).json({
       welcome:
-        "Welcome to APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+        "Welcome to API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
         "readable view of the response.",
       data: {
         customers: customers
@@ -183,7 +183,7 @@ var routes = function(app) {
     if (!apiSecret)
       res.status(401).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "Your request is unauthorized! 🚫",
@@ -205,7 +205,7 @@ var routes = function(app) {
     else if (!req.body.name || !req.body.type)
       res.status(400).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "Your request is incomplete! ✋",
@@ -243,7 +243,7 @@ var routes = function(app) {
       db.update("count", countId).write();
       res.status(201).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "You added a new customer! 🏅",
@@ -252,7 +252,7 @@ var routes = function(app) {
             {
               note:
                 "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
-                "you should see your new addition in the array!"
+                "you should see your new addition in the array! _Note that this will only work if you're using the API 101 Postman template._"
             }
           ],
           next: [
@@ -272,7 +272,7 @@ var routes = function(app) {
     if (!apiSecret)
       res.status(401).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "Your request is unauthorized! 🚫",
@@ -294,7 +294,7 @@ var routes = function(app) {
     else if (req.params.cust_id == "placeholder")
       res.status(400).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "Your request is incomplete! ✋",
@@ -319,7 +319,7 @@ var routes = function(app) {
     else if (!req.body.name || !req.body.type)
       res.status(400).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "Your request is incomplete! ✋",
@@ -351,7 +351,7 @@ var routes = function(app) {
         .write();
       res.status(201).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "You updated a customer! ✅",
@@ -380,7 +380,7 @@ var routes = function(app) {
     if (!apiSecret)
       res.status(401).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "Your request is unauthorized! 🚫",
@@ -402,7 +402,7 @@ var routes = function(app) {
     else if (req.params.cust_id == "placeholder")
       res.status(400).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "Your request is incomplete! ✋",
@@ -434,22 +434,22 @@ var routes = function(app) {
         .write();
       res.status(200).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "You deleted a customer! 🏆",
-          intro: "Your customer was updated in the database.",
+          intro: "Your customer was removed from the database.",
           steps: [
             {
               note:
                 "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
-                "you should see that your deleted customer was removed from the array!"
+                "you should see that your deleted customer is no longer in the array!"
             }
           ],
           next: [
             {
               step:
-                "🚀 You completed the APIs 101 collection! Check out the **API Learner** template to continue learning—it walks you through "+
+                "🚀 You completed the API 101 collection! Check out the **API Learner** template to continue learning—it walks you through "+
                   "remixing your own API!<br/><br/>"+
                   "[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/cf574a217e39178d2c20)"
             }
@@ -460,7 +460,7 @@ var routes = function(app) {
       else {
         res.status(400).json({
         welcome:
-          "You're learning APIs 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
+          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
           "readable view of the response.",
         tutorial: {
           title: "Your request is invalid! ⛔",
