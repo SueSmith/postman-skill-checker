@@ -1,5 +1,5 @@
 /*
-Hello! This is a learning API for the Postman API 101 webinar. Check out the template: 
+Hello! This is a learning API for the Postman API 101 webinar. Check out the template: https://explore.postman.com/templates/11317/api-101
 */
 
 var xml = require("xml");
@@ -189,7 +189,7 @@ var routes = function(app) {
           steps: [
             {
               note:
-                "In **Auth** select **API Key** from the drop-down, enter `auth_key` as the **Key** and any text you like as the **Value**. " +
+                "In **Authorization** select **API Key** from the drop-down, enter `auth_key` as the **Key** and any text you like as the **Value**. " +
                 "Make sure you are adding to the **Header**."
             }
           ],
