@@ -41,13 +41,19 @@ var routes = function(app) {
   // request to the console. The HTML you see in the browser is what `res.send()` is sending back.
   //
   app.get("/", function(req, res) {
-    res.status(200).json({message: "Use the API 101 template in Postman to learn API basics! Import the collection in Postman by clicking "+
-                         "New > Templates, and searching for 'API 101'. Open the first request in the collection and click Send."});
+    res
+      .status(200)
+      .json({
+        message:
+          "Use the API 101 template in Postman to learn API basics! Import the collection in Postman by clicking " +
+          "New > Templates, and searching for 'API 101'. Open the first request in the collection and click Send."
+      });
     console.log("Received GET");
   });
-  
-  var welcomeMsg = "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.";
+
+  var welcomeMsg =
+    "You're learning API 101! Check out the 'data' object below to see the values returned by the API. " +
+    "Click Visualize for a more readable view of the response.";
 
   //get request with query param
   app.get("/customer", function(req, res) {
@@ -84,9 +90,7 @@ var routes = function(app) {
           type: customerRecord.type
         };
         res.status(200).json({
-          welcome:
-            "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-            "readable view of the response.",
+          welcome: welcomeMsg,
           data: {
             customer: customer
           },
@@ -113,17 +117,15 @@ var routes = function(app) {
         });
       } else {
         res.status(404).json({
-          welcome:
-            "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-            "readable view of the response.",
+          welcome: welcomeMsg,
           tutorial: {
             title: "Your request contains invalid info! 😕",
             intro: "This endpoint requires the `id` for a valid customer.",
             steps: [
               {
                 note:
-                  "In **Params** add `id` in the **Key** column, and `1` as the value (or the ID of any customer you see in the array when you "+
-                    "send the `Get all customers` request)."
+                  "In **Params** add `id` in the **Key** column, and `1` as the value (or the ID of any customer you see in the array when you " +
+                  "send the `Get all customers` request)."
               }
             ],
             next: [
@@ -149,9 +151,7 @@ var routes = function(app) {
         return { id: r.id, name: r.name, type: r.type };
       });
     res.status(200).json({
-      welcome:
-        "Welcome to API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-        "readable view of the response.",
+      welcome: welcomeMsg,
       data: {
         customers: customers
       },
@@ -182,9 +182,7 @@ var routes = function(app) {
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "Your request is unauthorized! 🚫",
           intro: "This endpoint requires authentication.",
@@ -204,9 +202,7 @@ var routes = function(app) {
       });
     else if (!req.body.name || !req.body.type)
       res.status(400).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "Your request is incomplete! ✋",
           intro:
@@ -240,11 +236,9 @@ var routes = function(app) {
           admin: adminId
         })
         .write();
-      db.update("count", countId).write();
+      db.update('count', n => n + 1).write();
       res.status(201).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "You added a new customer! 🏅",
           intro: "Your new customer was added to the database.",
@@ -271,9 +265,7 @@ var routes = function(app) {
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "Your request is unauthorized! 🚫",
           intro: "This endpoint requires authentication.",
@@ -293,9 +285,7 @@ var routes = function(app) {
       });
     else if (req.params.cust_id == "placeholder")
       res.status(400).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "Your request is incomplete! ✋",
           intro:
@@ -318,9 +308,7 @@ var routes = function(app) {
       });
     else if (!req.body.name || !req.body.type)
       res.status(400).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "Your request is incomplete! ✋",
           intro:
@@ -350,9 +338,7 @@ var routes = function(app) {
         .assign({ name: req.body.name, type: req.body.type, admin: adminId })
         .write();
       res.status(201).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "You updated a customer! ✅",
           intro: "Your customer was updated in the database.",
@@ -379,9 +365,7 @@ var routes = function(app) {
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "Your request is unauthorized! 🚫",
           intro: "This endpoint requires authentication.",
@@ -401,9 +385,7 @@ var routes = function(app) {
       });
     else if (req.params.cust_id == "placeholder")
       res.status(400).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
+        welcome: welcomeMsg,
         tutorial: {
           title: "Your request is incomplete! ✋",
           intro:
@@ -427,61 +409,59 @@ var routes = function(app) {
     else {
       var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
       //check the record matches the user id
-      var cust = db.get("customers").find({id: parseInt(req.params.cust_id)}).value();
-      if(cust && cust.admin==adminId){
-      db.get("customers")
-        .remove({ id: parseInt(req.params.cust_id) })
-        .write();
-      res.status(200).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
-        tutorial: {
-          title: "You deleted a customer! 🏆",
-          intro: "Your customer was removed from the database.",
-          steps: [
-            {
-              note:
-                "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
-                "you should see that your deleted customer is no longer in the array!"
-            }
-          ],
-          next: [
-            {
-              step:
-                "🚀 You completed the API 101 collection! Check out the **API Learner** template to continue learning—it walks you through "+
-                  "remixing your own API!<br/><br/>"+
+      var cust = db
+        .get("customers")
+        .find({ id: parseInt(req.params.cust_id) })
+        .value();
+      if (cust && cust.admin == adminId) {
+        db.get("customers")
+          .remove({ id: parseInt(req.params.cust_id) })
+          .write();
+        res.status(200).json({
+          welcome: welcomeMsg,
+          tutorial: {
+            title: "You deleted a customer! 🏆",
+            intro: "Your customer was removed from the database.",
+            steps: [
+              {
+                note:
+                  "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
+                  "you should see that your deleted customer is no longer in the array!"
+              }
+            ],
+            next: [
+              {
+                step:
+                  "🚀 You completed the API 101 collection! Check out the **API Learner** template to continue learning—it walks you through " +
+                  "remixing your own API!<br/><br/>" +
                   "[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/cf574a217e39178d2c20)"
-            }
-          ]
-        }
-      });
-    }
-      else {
+              }
+            ]
+          }
+        });
+      } else {
         res.status(400).json({
-        welcome:
-          "You're learning API 101! Check out the 'data' object below to see the values returned by the API. Click Visualize for a more " +
-          "readable view of the response.",
-        tutorial: {
-          title: "Your request is invalid! ⛔",
-          intro:
-            "You can only remove customers you added using the `POST` method during the current session (and that haven't been deleted).",
-          steps: [
-            {
-              note:
-                "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
-                "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
-                "`Get all customers` request. ***You can only remove a customer you added.***"
-            }
-          ],
-          next: [
-            {
-              step:
-                "With the ID parameter for a customer _you added_ during this session in place, click **Send** again."
-            }
-          ]
-        }
-      });
+          welcome: welcomeMsg,
+          tutorial: {
+            title: "Your request is invalid! ⛔",
+            intro:
+              "You can only remove customers you added using the `POST` method during the current session (and that haven't been deleted).",
+            steps: [
+              {
+                note:
+                  "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
+                  "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
+                  "`Get all customers` request. ***You can only remove a customer you added.***"
+              }
+            ],
+            next: [
+              {
+                step:
+                  "With the ID parameter for a customer _you added_ during this session in place, click **Send** again."
+              }
+            ]
+          }
+        });
       }
     }
   });
