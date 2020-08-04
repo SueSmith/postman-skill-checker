@@ -78,7 +78,6 @@ var routes = function(app) {
         .get("customers")
         .find({ id: parseInt(req.query.id) })
         .value();
-      console.log(customerRecord);
       if (customerRecord) {
         var customer = {
           id: customerRecord.id,
@@ -124,7 +123,7 @@ var routes = function(app) {
             steps: [
               {
                 note:
-                  "In **Params** add `id` in the **Key** column, and `1` as the value."
+                  "In **Params** add `id` in the **Key** column, and `1` as the value (or the ID of a customer you see in the array when you send."
               }
             ],
             next: [
@@ -347,7 +346,7 @@ var routes = function(app) {
     else {
       var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
       db.get("customers")
-        .find({ id: req.params.cust_id })
+        .find({ id: parseInt(req.params.cust_id) })
         .assign({ name: req.body.name, type: req.body.type, admin: adminId })
         .write();
       res.status(201).json({
@@ -428,8 +427,8 @@ var routes = function(app) {
     else {
       var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
       //check the record matches the user id
-      var custAdmin = db.get("customers").find({id: parseInt(req.params.cust_id)}).value().admin;
-      if(custAdmin==adminId){
+      var cust = db.get("customers").find({id: parseInt(req.params.cust_id)}).value();
+      if(cust && cust.admin==adminId){
       db.get("customers")
         .remove({ id: parseInt(req.params.cust_id) })
         .write();
@@ -450,8 +449,9 @@ var routes = function(app) {
           next: [
             {
               step:
-                "🚀 You completed the APIs 101 collection! Check out another template for further learning—it walks you through remixing your "+
-                  "own API!<br/><br/>[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/cf574a217e39178d2c20)"
+                "🚀 You completed the APIs 101 collection! Check out the **API Learner** template to continue learning—it walks you through "+
+                  "remixing your own API!<br/><br/>"+
+                  "[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/cf574a217e39178d2c20)"
             }
           ]
         }
@@ -465,7 +465,7 @@ var routes = function(app) {
         tutorial: {
           title: "Your request is invalid! ⛔",
           intro:
-            "You can only remove customers you added using the `POST` method during the current session.",
+            "You can only remove customers you added using the `POST` method during the current session (and that haven't been deleted).",
           steps: [
             {
               note:
