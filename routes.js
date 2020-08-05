@@ -46,7 +46,8 @@ var routes = function(app) {
       .json({
         message:
           "Use the API 101 template in Postman to learn API basics! Import the collection in Postman by clicking " +
-          "New > Templates, and searching for 'API 101'. Open the first request in the collection and click Send."
+          "New > Templates, and searching for 'API 101'. Open the first request in the collection and click Send. " +
+          "To see the API code navigate to https://glitch.com/edit/#!/api-101"
       });
     console.log("Received GET");
   });
