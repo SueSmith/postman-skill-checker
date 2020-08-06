@@ -65,14 +65,13 @@ var routes = function(app) {
           steps: [
             {
               note:
-                "In **Params** add `id` in the **Key** column, and one of the `id` values from the customer list as the **Value**, " +
-                "for example `1`."
+                "In **Params** add `id` in the **Key** column, and one of the `id` values from the customer list as the **Value**."
             }
           ],
           next: [
             {
               step:
-                "With your parameter in place (you'll see e.g. `?id=1` added to the request address), click **Send** again."
+                "With your parameter in place (you'll see e.g. `?id=588` added to the request address), click **Send** again."
             }
           ]
         }
@@ -123,14 +122,14 @@ var routes = function(app) {
             steps: [
               {
                 note:
-                  "In **Params** add `id` in the **Key** column, and `1` as the value (or the ID of any customer you see in the array when you " +
+                  "In **Params** add `id` in the **Key** column, and the ID of any customer you see in the array when you " +
                   "send the `Get all customers` request)."
               }
             ],
             next: [
               {
                 step:
-                  "With your parameter in place (you'll see e.g. `?id=1` added to the request address), click **Send** again."
+                  "With your parameter in place (you'll see e.g. `?id=588` added to the request address), click **Send** again."
               }
             ]
           }
@@ -212,7 +211,7 @@ var routes = function(app) {
                 "In **Body** select **raw** and choose **JSON** instead of `Text` in the drop-down list. Enter the following JSON data " +
                 "including the enclosing curly braces:",
               raw_data: {
-                name: "Dorothy Zpornak",
+                name: "Dorothy Zbornak",
                 type: "Individual"
               }
             }
