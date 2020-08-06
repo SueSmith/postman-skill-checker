@@ -186,7 +186,7 @@ var routes = function(app) {
         welcome: welcomeMsg,
         tutorial: {
           title: "Your request is unauthorized! 🚫",
-          intro: "This endpoint requires authentication.",
+          intro: "This endpoint requires authorization.",
           steps: [
             {
               note:
@@ -269,7 +269,7 @@ var routes = function(app) {
         welcome: welcomeMsg,
         tutorial: {
           title: "Your request is unauthorized! 🚫",
-          intro: "This endpoint requires authentication.",
+          intro: "This endpoint requires authorization.",
           steps: [
             {
               note:
@@ -313,7 +313,7 @@ var routes = function(app) {
         tutorial: {
           title: "Your request is incomplete! ✋",
           intro:
-            "This endpoint requires body data representing the new customer.",
+            "This endpoint requires body data representing the updated customer details.",
           steps: [
             {
               note:
@@ -369,7 +369,7 @@ var routes = function(app) {
         welcome: welcomeMsg,
         tutorial: {
           title: "Your request is unauthorized! 🚫",
-          intro: "This endpoint requires authentication.",
+          intro: "This endpoint requires authorization.",
           steps: [
             {
               note:
