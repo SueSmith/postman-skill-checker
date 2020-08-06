@@ -413,7 +413,7 @@ var routes = function(app) {
         .get("customers")
         .find({ id: parseInt(req.params.cust_id) })
         .value();
-      if (cust && cust.admin == adminId) {
+      if (cust && ( adminId != "postman" ) && (cust.admin == adminId)) {
         db.get("customers")
           .remove({ id: parseInt(req.params.cust_id) })
           .write();
