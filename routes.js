@@ -531,6 +531,38 @@ var routes = function(app) {
     console.log("Database cleared");
     response.redirect("/");
   });
+  
+  //get all entries
+  app.get("/all", function(req, res) {
+    var customers = db
+      .get("customers")
+      .value();
+    res.status(200).json({
+      welcome: welcomeMsg,
+      data: {
+        customers: customers
+      },
+      tutorial: {
+        title: "You sent a request! 🚀",
+        intro:
+          "Your request used `GET` method and sent to the `/customers` path.",
+        steps: [
+          {
+            note: "The API returned JSON data including an array of customers:",
+            raw_data: {
+              customers: customers
+            }
+          }
+        ],
+        next: [
+          {
+            step:
+              "Now open the next `GET` request in the collection `Get one customer` and click **Send**."
+          }
+        ]
+      }
+    });
+  });
 };
 
 module.exports = routes;
