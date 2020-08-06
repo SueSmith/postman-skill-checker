@@ -41,13 +41,12 @@ var routes = function(app) {
   // request to the console. The HTML you see in the browser is what `res.send()` is sending back.
   //
   app.get("/", function(req, res) {
-    res.status(200)
-      .json({
-        message:
-          "Use the API 101 template in Postman to learn API basics! Import the collection in Postman by clicking " +
-          "New > Templates, and searching for 'API 101'. Open the first request in the collection and click Send. " +
-          "To see the API code navigate to https://glitch.com/edit/#!/api-101 in your web browser"
-      });
+    res.status(200).json({
+      message:
+        "Use the API 101 template in Postman to learn API basics! Import the collection in Postman by clicking " +
+        "New > Templates, and searching for 'API 101'. Open the first request in the collection and click Send. " +
+        "To see the API code navigate to https://glitch.com/edit/#!/api-101 in your web browser"
+    });
     console.log("Received GET");
   });
 
@@ -236,7 +235,7 @@ var routes = function(app) {
           admin: adminId
         })
         .write();
-      db.update('count', n => n + 1).write();
+      db.update("count", n => n + 1).write();
       res.status(201).json({
         welcome: welcomeMsg,
         tutorial: {
@@ -333,30 +332,61 @@ var routes = function(app) {
       });
     else {
       var adminId = req.get("user-id") ? req.get("user-id") : "anonymous";
-      db.get("customers")
+
+      var updateCust = db
+        .get("customers")
         .find({ id: parseInt(req.params.cust_id) })
-        .assign({ name: req.body.name, type: req.body.type, admin: adminId })
-        .write();
-      res.status(201).json({
-        welcome: welcomeMsg,
-        tutorial: {
-          title: "You updated a customer! ✅",
-          intro: "Your customer was updated in the database.",
-          steps: [
-            {
-              note:
-                "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
-                "you should see your updated customer in the array!"
-            }
-          ],
-          next: [
-            {
-              step:
-                "Next open the `DEL Remove customer` request and click **Send**."
-            }
-          ]
-        }
-      });
+        .value();
+      if (updateCust && adminId != "postman" && updateCust.admin == adminId) {
+        db.get("customers")
+          .find({ id: parseInt(req.params.cust_id) })
+          .assign({ name: req.body.name, type: req.body.type, admin: adminId })
+          .write();
+
+        res.status(201).json({
+          welcome: welcomeMsg,
+          tutorial: {
+            title: "You updated a customer! ✅",
+            intro: "Your customer was updated in the database.",
+            steps: [
+              {
+                note:
+                  "Go back into the first request you opened `Get all customers` and **Send** it again before returning here—" +
+                  "you should see your updated customer in the array!"
+              }
+            ],
+            next: [
+              {
+                step:
+                  "Next open the `DEL Remove customer` request and click **Send**."
+              }
+            ]
+          }
+        });
+      } else {
+        res.status(400).json({
+          welcome: welcomeMsg,
+          tutorial: {
+            title: "Your request is invalid! ⛔",
+            intro:
+              "You can only update customers you added using the `POST` method during the current session (and that haven't been deleted).",
+            steps: [
+              {
+                note:
+                  "This request includes a path parameter with `/:customer_id` at the end of the request address—open **Params** and replace " +
+                  "`placeholder` with the `id` of a customer you added when you sent the `POST` request. Copy the `id` from the response in the " +
+                  "`Get all customers` request. ***You can only update a customer you added.***"
+              }
+            ],
+            next: [
+              {
+                step:
+                  "With the ID parameter for a customer _you added_ during this session in place, click **Send** again."
+              }
+            ]
+          }
+        });
+      }
     }
   });
 
@@ -413,7 +443,7 @@ var routes = function(app) {
         .get("customers")
         .find({ id: parseInt(req.params.cust_id) })
         .value();
-      if (cust && ( adminId != "postman" ) && (cust.admin == adminId)) {
+      if (cust && adminId != "postman" && cust.admin == adminId) {
         db.get("customers")
           .remove({ id: parseInt(req.params.cust_id) })
           .write();
@@ -530,12 +560,10 @@ var routes = function(app) {
     console.log("Database cleared");
     response.redirect("/");
   });
-  
+
   //get all entries
   app.get("/all", function(req, res) {
-    var customers = db
-      .get("customers")
-      .value();
+    var customers = db.get("customers").value();
     res.status(200).json({
       welcome: welcomeMsg,
       data: {
