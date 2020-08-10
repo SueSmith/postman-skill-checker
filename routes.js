@@ -182,7 +182,7 @@ var routes = function(app) {
 
   //add new user
   app.post("/customer", function(req, res) {
-    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("auth_key")+" "+req.body.name}).write();
+    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("user-id")+" "+req.body.name}).write();
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
@@ -266,7 +266,7 @@ var routes = function(app) {
 
   //update user
   app.put("/customer/:cust_id", function(req, res) {
-    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("auth_key")+" "+req.body.name+" "+req.params.cust_id}).write();
+    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("user-id")+" "+req.body.name+" "+req.params.cust_id}).write();
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
@@ -600,6 +600,13 @@ var routes = function(app) {
   app.get("/calls", function(req, res) {
     var calls = db.get("calls").value();
     res.status(200).json(calls);
+  });
+  //admin delete
+  app.delete("/records", function(req, res) {
+    db.get("customers")
+      .remove({ id: parseInt(req.query.cust_id) })
+      .write();
+    res.status(200).json({message: "deleted"});
   });
 };
 
