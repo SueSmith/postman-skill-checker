@@ -30,7 +30,7 @@ db.defaults({
       admin: "postman"
     }
   ],
-  count: 3
+  count: 3, calls: []
 }).write();
 
 var routes = function(app) {
@@ -41,6 +41,7 @@ var routes = function(app) {
   // request to the console. The HTML you see in the browser is what `res.send()` is sending back.
   //
   app.get("/", function(req, res) {
+    db.get("calls").push({when: Date.now(), where: "GET /", what: null}).write();
     res.status(200).json({
       message:
         "Use the API 101 template in Postman to learn API basics! Import the collection in Postman by clicking " +
@@ -56,7 +57,9 @@ var routes = function(app) {
 
   //get request with query param
   app.get("/customer", function(req, res) {
+    
     if (!req.query.id) {
+      db.get("calls").push({when: Date.now(), where: "GET /customer", what: null}).write();
       res.status(404).json({
         welcome: welcomeMsg,
         tutorial: {
@@ -77,6 +80,7 @@ var routes = function(app) {
         }
       });
     } else {
+      db.get("calls").push({when: Date.now(), where: "GET /customer", what: req.query.id}).write();
       var customerRecord = db
         .get("customers")
         .find({ id: parseInt(req.query.id) })
@@ -140,6 +144,7 @@ var routes = function(app) {
 
   //get all users
   app.get("/customers", function(req, res) {
+    db.get("calls").push({when: Date.now(), where: "GET /customers", what: req.get("user-id")}).write();
     console.log(req.get("user-id"));
     var customers = db
       .get("customers")
@@ -177,6 +182,7 @@ var routes = function(app) {
 
   //add new user
   app.post("/customer", function(req, res) {
+    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("auth_key")+" "+req.body.name}).write();
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
@@ -260,6 +266,7 @@ var routes = function(app) {
 
   //update user
   app.put("/customer/:cust_id", function(req, res) {
+    db.get("calls").push({when: Date.now(), where: "POST /customer", what: req.get("auth_key")+" "+req.body.name+" "+req.params.cust_id}).write();
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
@@ -588,6 +595,11 @@ var routes = function(app) {
         ]
       }
     });
+  });
+  //get all entries
+  app.get("/calls", function(req, res) {
+    var calls = db.get("calls").value();
+    res.status(200).json(calls);
   });
 };
 
