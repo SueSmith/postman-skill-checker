@@ -396,7 +396,7 @@ var routes = function(app) {
     }
   });
 
-  //update user
+  //delete user
   app.delete("/customer/:cust_id", function(req, res) {
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
