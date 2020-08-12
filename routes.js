@@ -76,7 +76,7 @@ var routes = function(app) {
           next: [
             {
               step:
-                "With your parameter in place (you'll see e.g. `?id=588` added to the request address), click **Send** again."
+                "With your parameter in place (you'll see e.g. `?id=3` added to the request address), click **Send** again."
             }
           ]
         }
@@ -136,7 +136,7 @@ var routes = function(app) {
             next: [
               {
                 step:
-                  "With your parameter in place (you'll see e.g. `?id=588` added to the request address), click **Send** again."
+                  "With your parameter in place (you'll see e.g. `?id=3` added to the request address), click **Send** again."
               }
             ]
           }
