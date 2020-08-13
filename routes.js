@@ -604,7 +604,7 @@ var routes = function(app) {
   });
   //get all entries
   app.get("/calls", function(req, res) {
-    var calls = db.get("calls").value();
+    var calls = db.get("calls").value(); console.log(process.env.PROJECT_REMIX_CHAIN);
     res.status(200).json(calls);
   });
   //admin delete
