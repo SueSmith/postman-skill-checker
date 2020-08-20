@@ -69,17 +69,23 @@ var routes = function(app) {
       .get("learners")
       .find({ id: req.get("user-id") })
       .value();
+    let learner = {};
     if (existing) {
       let email="-", bodies=0, methods=0, auth=0, vars=0, script=0;
       if(req.query.email) email=req.query.email;
       if(req.body) bodies=1;
       //methods will be any other than get
-      if(req.get(""))
-      /*
-      .assign({ name: req.body.name, type: req.body.type, admin: adminId })
+      if(req.get("auth_key")) auth=1;
+      //tbc checking vars and scripts
+      learner={email: email, methods: methods, bodies: bodies, auth: auth, vars: vars, script: script};
+      db
+      .get("learners")
+      .find({ id: req.get("user-id") })
+      .assign(learner)
           .write();
-          */
+          
     } else {
+      learner={email: "-", methods: 0, bodies: 0, auth: 0, vars: 0, script: 0};
       db.get("learners")
         .push({
           id: req.get("user-id"),
@@ -92,6 +98,8 @@ var routes = function(app) {
         })
         .write();
     }
+    
+    
 
     res.status(400).json({
       welcome: welcomeMsg,
@@ -102,7 +110,37 @@ var routes = function(app) {
         {
           name: "Changed method",
           hint: "Try anything other than GET",
-          value: true
+          value: learner.methods>0 ? true : false
+        },
+        {
+          name: "Sent query parameter",
+          hint:
+            "Add 'email' as a query param, with your student training email address as the value.",
+          value: false
+        },
+        {
+          name: "Sent query parameter",
+          hint:
+            "Add 'email' as a query param, with your student training email address as the value.",
+          value: false
+        },
+        {
+          name: "Sent query parameter",
+          hint:
+            "Add 'email' as a query param, with your student training email address as the value.",
+          value: false
+        },
+        {
+          name: "Sent query parameter",
+          hint:
+            "Add 'email' as a query param, with your student training email address as the value.",
+          value: false
+        },
+        {
+          name: "Sent query parameter",
+          hint:
+            "Add 'email' as a query param, with your student training email address as the value.",
+          value: false
         },
         {
           name: "Sent query parameter",
