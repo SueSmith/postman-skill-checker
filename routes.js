@@ -73,8 +73,8 @@ var routes = function(app) {
       .value();
     let learner = {};
     if (existing) {
-      let email="-", bodies=0, methods=0, auth=0, vars=0, script=0;
-      if(req.query.email) email=req.query.email;
+      let email="-", bodies=0, methods=0, auth=0, vars=0, script=0; console.log(req.query.email)
+      if(req.query.email && req.q.length>0) email=req.query.email;
       if(req.body.name) bodies=1;
       //methods will be any other than get
       if(req.get("auth_key")) auth=1;
@@ -98,7 +98,8 @@ var routes = function(app) {
       welcome: welcomeMsg,
       title: "Skill checker incomplete!",
       intro:
-        "Complete the following request configurations and hit Send to see the list update.",
+        "Complete each of the following request configurations and keep hitting Send to see the list update. "+
+        "When you're done you'll get a 200 OK status code!",
       skills: [
         {
           name: "Changed method",
@@ -132,8 +133,8 @@ var routes = function(app) {
         {
           name: "Added a script",
           hint:
-            "Add script code to the request Tests to set a variable named 'responseData', with a value from the `rand_name` field in the response JSON "+
-            "- hint: you'll need to run the request twice because it won't run until after the response is received.",
+            "Add script code to the request Tests to set a variable named 'responseData', with a value from the `rand` field in the response JSON. "+
+            "Hint: you'll need to run the request twice because the test code won't run until after the response is received.",
           value: learner.script>0 ? true : false
         }
       ],
