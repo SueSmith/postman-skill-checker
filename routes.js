@@ -37,7 +37,7 @@ var routes = function(app) {
   //
   app.get("/", function(req, res) {
     var newDate = new Date();
-    db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /", what: null}).write();
+    db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /"}).write();
     res.status(200).json({
       message:
         "Use the API 101 template in Postman to learn API basics! Import the collection in Postman by clicking " +
@@ -48,13 +48,20 @@ var routes = function(app) {
   });
 
   var welcomeMsg =
-    "You're learning API 101! Check out the 'data' object below to see the values returned by the API. " +
+    "You're using the Postman Skill Checker! " +
     "Click Visualize for a more readable view of the response.";
   
   app.get("/skills", function(req, res){
+          var newDate = new Date();
+      db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /skills"}).write();
+    
+    var existing = db.get("learners").find({ id: req.get("user-id") })
+        .value();
+
     res.status(400).json({
+      welcome: welcomeMsg,
       title: "Skill checker incomplete!",
-      intro: "Complete the following request configurations and hit **Send** to see the list update.",
+      intro: "Complete the following request configurations and hit Send to see the list update.",
       skills: [
         {
           name: "Changed method",
