@@ -143,7 +143,8 @@ var routes = function(app) {
             "tbc",
           value: learner.script>0 ? true : false
         }
-      ]
+      ],
+      data: "Postman"
     });
   });
 
