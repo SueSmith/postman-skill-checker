@@ -50,6 +50,23 @@ var routes = function(app) {
   var welcomeMsg =
     "You're learning API 101! Check out the 'data' object below to see the values returned by the API. " +
     "Click Visualize for a more readable view of the response.";
+  
+  app.get("/skills", function(req, res){
+    res.status(400).json({
+      title: "Skill checker incomplete!",
+      intro: "Complete the following request configurations and hit **Send** to see the list update.",
+      skills: [
+        {
+          name: "Changed method",
+          value: true
+        },
+        {
+          name: "Sent query parameter",
+          value: false
+        }
+      ]
+    });
+  });
 
   //get request with query param
   app.get("/customer", function(req, res) {
