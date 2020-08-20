@@ -14,18 +14,17 @@ db.defaults({
     {
       id: 1,
       email: "sue.smith@postman.com",
-      query: "Sue Smith",
       methods: 1,
-      school: "Lovely Bootcamp",
-      body: {hi: "there"},
+      body: { name: "Sue Smith" },
       auth_token: "abcde",
       var: "value",
       script: 1
     }
   ],
-  count: 1, calls: []
+  count: 1,
+  calls: []
 }).write();
-//name is query param
+//email is query param
 //template includes unresolved var
 
 var routes = function(app) {
@@ -37,7 +36,12 @@ var routes = function(app) {
   //
   app.get("/", function(req, res) {
     var newDate = new Date();
-    db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /"}).write();
+    db.get("calls")
+      .push({
+        when: newDate.toDateString() + " " + newDate.toTimeString(),
+        where: "GET /"
+      })
+      .write();
     res.status(200).json({
       message:
         "Use the API 101 template in Postman to learn API basics! Import the collection in Postman by clicking " +
@@ -50,25 +54,55 @@ var routes = function(app) {
   var welcomeMsg =
     "You're using the Postman Skill Checker! " +
     "Click Visualize for a more readable view of the response.";
-  
-  app.get("/skills", function(req, res){
-          var newDate = new Date();
-      db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /skills"}).write();
-    
-    var existing = db.get("learners").find({ id: req.get("user-id") })
-        .value();
+
+  app.get("/skills", function(req, res) {
+    var newDate = new Date();
+    db.get("calls")
+      .push({
+        when: newDate.toDateString() + " " + newDate.toTimeString(),
+        where: "GET /skills",
+        what: req.get("user-id")
+      })
+      .write();
+
+    var existing = db
+      .get("learners")
+      .find({ id: req.get("user-id") })
+      .value();
+    if (existing) {
+      /*
+      .assign({ name: req.body.name, type: req.body.type, admin: adminId })
+          .write();
+          */
+    } else {
+      db.get("learners")
+        .push({
+          id: req.get("user-id"),
+          email: "",
+          methods: 1,
+          body: {},
+          auth_token: "",
+          var: "",
+          script: 0
+        })
+        .write();
+    }
 
     res.status(400).json({
       welcome: welcomeMsg,
       title: "Skill checker incomplete!",
-      intro: "Complete the following request configurations and hit Send to see the list update.",
+      intro:
+        "Complete the following request configurations and hit Send to see the list update.",
       skills: [
         {
           name: "Changed method",
+          hint: "Try anything other than GET",
           value: true
         },
         {
           name: "Sent query parameter",
+          hint:
+            "Add 'email' as a query param, with your student training email address as the value.",
           value: false
         }
       ]
@@ -77,10 +111,15 @@ var routes = function(app) {
 
   //get request with query param
   app.get("/customer", function(req, res) {
-    
     if (!req.query.id) {
       var newDate = new Date();
-      db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /customer", what: null}).write();
+      db.get("calls")
+        .push({
+          when: newDate.toDateString() + " " + newDate.toTimeString(),
+          where: "GET /customer",
+          what: null
+        })
+        .write();
       res.status(404).json({
         welcome: welcomeMsg,
         tutorial: {
@@ -102,7 +141,13 @@ var routes = function(app) {
       });
     } else {
       var newDate = Date();
-      db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /customer", what: req.query.id}).write();
+      db.get("calls")
+        .push({
+          when: newDate.toDateString() + " " + newDate.toTimeString(),
+          where: "GET /customer",
+          what: req.query.id
+        })
+        .write();
       var customerRecord = db
         .get("customers")
         .find({ id: parseInt(req.query.id) })
@@ -167,7 +212,13 @@ var routes = function(app) {
   //get all users
   app.get("/customers", function(req, res) {
     var newDate = new Date();
-    db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "GET /customers", what: req.get("user-id")}).write();
+    db.get("calls")
+      .push({
+        when: newDate.toDateString() + " " + newDate.toTimeString(),
+        where: "GET /customers",
+        what: req.get("user-id")
+      })
+      .write();
     console.log(req.get("user-id"));
     var customers = db
       .get("customers")
@@ -206,7 +257,13 @@ var routes = function(app) {
   //add new user
   app.post("/customer", function(req, res) {
     var newDate = new Date();
-    db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "POST /customer", what: req.get("user-id")+" "+req.body.name}).write();
+    db.get("calls")
+      .push({
+        when: newDate.toDateString() + " " + newDate.toTimeString(),
+        where: "POST /customer",
+        what: req.get("user-id") + " " + req.body.name
+      })
+      .write();
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
@@ -291,7 +348,14 @@ var routes = function(app) {
   //update user
   app.put("/customer/:cust_id", function(req, res) {
     var newDate = new Date();
-    db.get("calls").push({when: newDate.toDateString()+" "+newDate.toTimeString(), where: "POST /customer", what: req.get("user-id")+" "+req.body.name+" "+req.params.cust_id}).write();
+    db.get("calls")
+      .push({
+        when: newDate.toDateString() + " " + newDate.toTimeString(),
+        where: "POST /customer",
+        what:
+          req.get("user-id") + " " + req.body.name + " " + req.params.cust_id
+      })
+      .write();
     const apiSecret = req.get("auth_key");
     if (!apiSecret)
       res.status(401).json({
@@ -623,7 +687,8 @@ var routes = function(app) {
   });
   //get all entries
   app.get("/calls", function(req, res) {
-    var calls = db.get("calls").value(); console.log(process.env.PROJECT_REMIX_CHAIN);
+    var calls = db.get("calls").value();
+    console.log(process.env.PROJECT_REMIX_CHAIN);
     res.status(200).json(calls);
   });
   //admin delete
@@ -631,7 +696,7 @@ var routes = function(app) {
     db.get("customers")
       .remove({ id: parseInt(req.query.cust_id) })
       .write();
-    res.status(200).json({message: "deleted"});
+    res.status(200).json({ message: "deleted" });
   });
 };
 
