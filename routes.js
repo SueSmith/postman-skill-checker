@@ -15,9 +15,9 @@ db.defaults({
       id: 1,
       email: "sue.smith@postman.com",
       methods: 1,
-      body: { name: "Sue Smith" },
-      auth_token: "abcde",
-      var: "value",
+      bodies: 0,
+      auth: 0,
+      vars: 0,
       script: 1
     }
   ],
@@ -70,6 +70,11 @@ var routes = function(app) {
       .find({ id: req.get("user-id") })
       .value();
     if (existing) {
+      let email="-", bodies=0, methods=0, auth=0, vars=0, script=0;
+      if(req.query.email) email=req.query.email;
+      if(req.body) bodies=1;
+      //methods will be any other than get
+      if(req.get(""))
       /*
       .assign({ name: req.body.name, type: req.body.type, admin: adminId })
           .write();
@@ -78,11 +83,11 @@ var routes = function(app) {
       db.get("learners")
         .push({
           id: req.get("user-id"),
-          email: "",
-          methods: 1,
-          body: {},
-          auth_token: "",
-          var: "",
+          email: "-",
+          methods: 0,
+          bodies: 0,
+          auth: 0,
+          vars: 0,
           script: 0
         })
         .write();
@@ -658,32 +663,10 @@ var routes = function(app) {
 
   //get all entries
   app.get("/all", function(req, res) {
-    var customers = db.get("customers").value();
+    var learners = db.get("learners").value();
     res.status(200).json({
-      welcome: welcomeMsg,
-      data: {
-        customers: customers
-      },
-      tutorial: {
-        title: "You sent a request! 🚀",
-        intro:
-          "Your request used `GET` method and sent to the `/customers` path.",
-        steps: [
-          {
-            note: "The API returned JSON data including an array of customers:",
-            raw_data: {
-              customers: customers
-            }
-          }
-        ],
-        next: [
-          {
-            step:
-              "Now open the next `GET` request in the collection `Get one customer` and click **Send**."
-          }
-        ]
-      }
-    });
+        learners: learners
+      });
   });
   //get all entries
   app.get("/calls", function(req, res) {
