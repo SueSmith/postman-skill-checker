@@ -1,5 +1,5 @@
 /*
-Hello! This is a learning API for the Postman API 101 webinar. Check out the template: https://explore.postman.com/templates/11317/api-101
+Hello! This is a learning API for the Postman student expert training. Check out the template: tbc
 */
 
 var xml = require("xml");
@@ -8,7 +8,7 @@ var low = require("lowdb");
 var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
-const faker = require('faker');
+const faker = require("faker");
 
 db.defaults({
   learners: [
@@ -56,99 +56,145 @@ var routes = function(app) {
   var welcomeMsg =
     "You're using the Postman Skill Checker! " +
     "Click Visualize for a more readable view of the response.";
-  
-  
-  app.use('/skills', function(req, res, next) {
-  if (req.method === 'GET' || req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
-    var newDate = new Date();
-    db.get("calls")
-      .push({
-        when: newDate.toDateString() + " " + newDate.toTimeString(),
-        where: "GET /skills",
-        what: req.get("user-id")
-      })
-      .write();
 
-    var existing = db
-      .get("learners")
-      .find({ id: req.get("user-id") })
-      .value();
-    let learner = {};
-    if (existing) {
-      let email="", bodies=0, methods=0, auth=0, vars=0, script=0; 
-      if(req.query.email && req.query.email.length>0){ email=req.query.email; console.log("em "+req.query.email);}
-      if(req.body.name) bodies=1;
-      if(req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') methods=1;
-      if(req.get("auth_key")) auth=1;
-      if(req.get("course").indexOf('{{')<0) vars=1;
-      if(req.get("response-value")==existing.rand) script=1;
-      learner={email: email, methods: methods, bodies: bodies, auth: auth, vars: vars, script: script, rand: existing.rand};
-      db
-      .get("learners")
-      .find({ id: req.get("user-id") })
-      .assign(learner)
-          .write();
-          
-    } else {
-      learner={id: req.get("user-id"), email: "-", methods: 0, bodies: 0, auth: 0, vars: 0, script: 0, rand: faker.name.firstName()};
-      db.get("learners")
-        .push(learner)
+  app.use("/skills", function(req, res, next) {
+    if (
+      req.method === "GET" ||
+      req.method === "POST" ||
+      req.method === "PUT" ||
+      req.method === "DELETE"
+    ) {
+      var newDate = new Date();
+      db.get("calls")
+        .push({
+          when: newDate.toDateString() + " " + newDate.toTimeString(),
+          where: "GET /skills",
+          what: req.get("user-id")
+        })
         .write();
-    }
-    console.log("rand "+learner.rand)
-    res.status(400).json({
-      welcome: welcomeMsg,
-      title: "Skill checker incomplete!",
-      intro:
-        "Complete each of the following request configurations and keep hitting Send to see the list update. "+
-        "When you're done you'll get a 200 OK status code!",
-      skills: [
-        {
-          name: "Changed method",
-          hint: "Change the request method to POST, PUT, or DELETE.",
-          value: learner.methods>0 ? true : false
-        },
-        {
-          name: "Sent query parameter",
-          hint:
-            "Add 'email' as a query param, with your student training email address (personal, not your school email) as the value.",
-          value: learner.email.length>0 ? true : false
-        },
-        {
-          name: "Added body data",
-          hint:
-            "Add JSON body data including a field `name` with the value as your name.",
-          value: learner.bodies>0 ? true : false
-        },
-        {
-          name: "Authorized",
-          hint:
-            "Add API Key auth with the name `auth_key` and the name of your school as the value (add to the request header).",
-          value: learner.auth>0 ? true : false
-        },
-        {
-          name: "Set a variable",
-          hint:
-            "Add a variable to the collection, naming it 'myCourse' and giving it the name of your course as the current value.",
-          value: learner.vars>0 ? true : false
-        },
-        {
-          name: "Added a script",
-          hint:
-            "Add script code to the request Tests to set a variable named 'responseData', with a value from the `rand` field in the response JSON. "+
-            "Hint: you'll need to run the request twice because the test code won't run until after the response is received.",
-          value: learner.script>0 ? true : false
-        }
-      ],
-      rand: ""+learner.rand
-    });
-  } else
-    next();
-});
 
-//  app.get("/skills", function(req, res) {
-    
-//  });
+      var existing = db
+        .get("learners")
+        .find({ id: req.get("user-id") })
+        .value();
+      var done = true;
+      let learner = {};
+      if (existing) {
+        let email = "",
+          bodies = 0,
+          methods = 0,
+          auth = 0,
+          vars = 0,
+          script = 0;
+        if (req.query.email && req.query.email.length > 0)
+          email = req.query.email;
+
+        if (req.body.name) bodies = 1;
+        if (
+          req.method === "POST" ||
+          req.method === "PUT" ||
+          req.method === "DELETE"
+        )
+          methods = 1;
+        if (req.get("auth_key")) auth = 1;
+        if (req.get("course").indexOf("{{") < 0) vars = 1;
+        if (req.get("response-value") == existing.rand) script = 1;
+        learner = {
+          email: email,
+          methods: methods,
+          bodies: bodies,
+          auth: auth,
+          vars: vars,
+          script: script,
+          rand: existing.rand
+        };
+        db.get("learners")
+          .find({ id: req.get("user-id") })
+          .assign(learner)
+          .write();
+      } else {
+        learner = {
+          id: req.get("user-id"),
+          email: "",
+          methods: 0,
+          bodies: 0,
+          auth: 0,
+          vars: 0,
+          script: 0,
+          rand: faker.name.firstName()
+        };
+        db.get("learners")
+          .push(learner)
+          .write();
+      }
+      if (
+        learner.email.length < 1 ||
+        learner.methods < 1 ||
+        learner.bodies < 1 ||
+        learner.auth < 1 ||
+        learner.vars < 1 ||
+        learner.script < 1
+      )
+        done = false;
+      let statusCode = done ? 200 : 400;
+      let titleMsg = done
+        ? "Skill checker complete!!!"
+        : "Skill checker incomplete!";
+      let introMsg = done
+        ? "You completed the skill checker! Next....."
+        : "Complete each of the following request configurations and keep hitting Send to see the list update. " +
+          "When you're done you'll get a 200 OK status code!";
+      res.status(statusCode).json({
+        welcome: welcomeMsg,
+        title: titleMsg,
+        intro: introMsg,
+        skills: [
+          {
+            name: "Changed method",
+            hint: "Change the request method to POST, PUT, or DELETE.",
+            value: learner.methods > 0 ? true : false
+          },
+          {
+            name: "Sent query parameter",
+            hint:
+              "Add 'email' as a query param, with your student training email address (personal, not your school email) as the value.",
+            value: learner.email.length > 0 ? true : false
+          },
+          {
+            name: "Added body data",
+            hint:
+              "Add JSON body data including a field `name` with the value as your name.",
+            value: learner.bodies > 0 ? true : false
+          },
+          {
+            name: "Authorized",
+            hint:
+              "Add API Key auth with the name `auth_key` and the name of your school as the value (add to the request header).",
+            value: learner.auth > 0 ? true : false
+          },
+          {
+            name: "Set a variable",
+            hint:
+              "Add a new variable to the collection, naming it 'myCourse' and giving it the name of your course as the Current value. " +
+              "(Leave the user-id var in place.)",
+            value: learner.vars > 0 ? true : false
+          },
+          {
+            name: "Added a script",
+            hint:
+              "Add script code to the request Tests to set a variable named 'responseData', with a value from the `rand` field in the response JSON. " +
+              "Hint: you'll need to run the request twice because the test code won't run until after the response is received.",
+            value: learner.script > 0 ? true : false
+          }
+        ],
+        rand: "" + learner.rand
+      });
+    } else next();
+  });
+
+  //  app.get("/skills", function(req, res) {
+
+  //  });
 
   //protect everything after this by checking for the secret
   app.use((req, res, next) => {
@@ -161,10 +207,10 @@ var routes = function(app) {
   });
 
   // removes entries from users and populates it with default users
-//  app.get("/reset", (request, response) => {
-    
-//    response.redirect("/");
-//  });
+  //  app.get("/reset", (request, response) => {
+
+  //    response.redirect("/");
+  //  });
 
   // removes all entries from the collection
   app.get("/clear", (request, response) => {
@@ -180,8 +226,8 @@ var routes = function(app) {
   app.get("/all", function(req, res) {
     var learners = db.get("learners").value();
     res.status(200).json({
-        learners: learners
-      });
+      learners: learners
+    });
   });
   //get all entries
   app.get("/calls", function(req, res) {
