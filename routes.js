@@ -8,6 +8,7 @@ var low = require("lowdb");
 var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
+const faker = require('faker');
 
 db.defaults({
   learners: [
@@ -95,13 +96,11 @@ var routes = function(app) {
           bodies: 0,
           auth: 0,
           vars: 0,
-          script: 0
+          script: 0,
+          rand: faker.name.firstName()
         })
         .write();
     }
-    
-    
-
     res.status(400).json({
       welcome: welcomeMsg,
       title: "Skill checker incomplete!",
@@ -116,7 +115,7 @@ var routes = function(app) {
         {
           name: "Sent query parameter",
           hint:
-            "Add 'email' as a query param, with your student training email address as the value.",
+            "Add 'email' as a query param, with your student training email address (personal, not your school email) as the value.",
           value: learner.email.length>0 ? true : false
         },
         {
@@ -140,12 +139,12 @@ var routes = function(app) {
         {
           name: "Added a script",
           hint:
-            "Add script code to the request Tests to set a variable named 'responseData', with a value from the `fruit` field in the response JSON "+
+            "Add script code to the request Tests to set a variable named 'responseData', with a value from the `rand_name` field in the response JSON "+
             "- hint: you'll need to run the request twice because it won't run until after the response is received.",
           value: learner.script>0 ? true : false
         }
       ],
-      fruit: "banana"
+      rand_name: learner.rand
     });
   });
 

@@ -10,7 +10,8 @@
     "express": "^4.12.4",
     "body-parser": "1.14.2",
     "xml": "^1.0.1",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "faker": "^4.1.0"
   },
   "engines": {
     "node": "6.x"
