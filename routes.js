@@ -77,7 +77,7 @@ var routes = function(app) {
       //methods will be any other than get
       if(req.get("auth_key")) auth=1;
       if(req.get("course").indexOf('{{')<0) vars=1;
-      //tbc checking scripts
+      if(req.get("response-value").indexOf('{{')<0) script=1;
       learner={email: email, methods: methods, bodies: bodies, auth: auth, vars: vars, script: script};
       db
       .get("learners")
@@ -138,9 +138,10 @@ var routes = function(app) {
           value: learner.vars>0 ? true : false
         },
         {
-          name: "Edited a script",
+          name: "Added a script",
           hint:
-            "tbc",
+            "Add script code to the request Tests to set a variable named 'responseData', with a value from the `data` field in the response JSON "+
+            "- hint: you'll need to run the request twice because it won't run until after the response is received.",
           value: learner.script>0 ? true : false
         }
       ],
