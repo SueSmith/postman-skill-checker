@@ -19,7 +19,8 @@ db.defaults({
       bodies: 0,
       auth: 0,
       vars: 0,
-      script: 1
+      script: 1,
+      rand: "Sue"
     }
   ],
   count: 1,
@@ -78,8 +79,8 @@ var routes = function(app) {
       //methods will be any other than get
       if(req.get("auth_key")) auth=1;
       if(req.get("course").indexOf('{{')<0) vars=1;
-      if(req.get("response-value")=="banana") script=1;
-      learner={email: email, methods: methods, bodies: bodies, auth: auth, vars: vars, script: script};
+      if(req.get("response-value")==existing.rand) script=1;
+      learner={email: email, methods: methods, bodies: bodies, auth: auth, vars: vars, script: script, rand: existing.rand};
       db
       .get("learners")
       .find({ id: req.get("user-id") })
@@ -87,20 +88,12 @@ var routes = function(app) {
           .write();
           
     } else {
-      learner={email: "-", methods: 0, bodies: 0, auth: 0, vars: 0, script: 0};
+      learner={id: req.get("user-id"), email: "-", methods: 0, bodies: 0, auth: 0, vars: 0, script: 0, rand: faker.name.firstName()};
       db.get("learners")
-        .push({
-          id: req.get("user-id"),
-          email: "-",
-          methods: 0,
-          bodies: 0,
-          auth: 0,
-          vars: 0,
-          script: 0,
-          rand: faker.name.firstName()
-        })
+        .push(learner)
         .write();
     }
+    console.log("rand "+learner.rand)
     res.status(400).json({
       welcome: welcomeMsg,
       title: "Skill checker incomplete!",
@@ -144,7 +137,7 @@ var routes = function(app) {
           value: learner.script>0 ? true : false
         }
       ],
-      rand_name: learner.rand
+      rand: ""+learner.rand
     });
   });
 
