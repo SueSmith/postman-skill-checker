@@ -73,9 +73,10 @@ var routes = function(app) {
     if (existing) {
       let email="-", bodies=0, methods=0, auth=0, vars=0, script=0;
       if(req.query.email) email=req.query.email;
-      if(req.body) bodies=1;
+      if(req.body.name) bodies=1;
       //methods will be any other than get
       if(req.get("auth_key")) auth=1;
+      if(req.get("course").indexOf('{{')<0) vars=1;
       //tbc checking vars and scripts
       learner={email: email, methods: methods, bodies: bodies, auth: auth, vars: vars, script: script};
       db
@@ -116,37 +117,31 @@ var routes = function(app) {
           name: "Sent query parameter",
           hint:
             "Add 'email' as a query param, with your student training email address as the value.",
-          value: false
+          value: learner.email>0 ? true : false
         },
         {
-          name: "Sent query parameter",
+          name: "Added body data",
           hint:
-            "Add 'email' as a query param, with your student training email address as the value.",
-          value: false
+            "Add JSON body data including a field `name` with the value as the name of your school.",
+          value: learner.bodies>0 ? true : false
         },
         {
-          name: "Sent query parameter",
+          name: "Authorized",
           hint:
-            "Add 'email' as a query param, with your student training email address as the value.",
-          value: false
+            "Add API Key auth with the name `auth_key` and any text string value.",
+          value: learner.auth>0 ? true : false
         },
         {
-          name: "Sent query parameter",
+          name: "Set a variable",
           hint:
-            "Add 'email' as a query param, with your student training email address as the value.",
-          value: false
+            "Add a variable to the collection, naming it 'myCourse' and giving it the name of your course as the value.",
+          value: learner.vars>0 ? true : false
         },
         {
-          name: "Sent query parameter",
+          name: "Edited a script",
           hint:
-            "Add 'email' as a query param, with your student training email address as the value.",
-          value: false
-        },
-        {
-          name: "Sent query parameter",
-          hint:
-            "Add 'email' as a query param, with your student training email address as the value.",
-          value: false
+            "tbc",
+          value: learner.script>0 ? true : false
         }
       ]
     });
