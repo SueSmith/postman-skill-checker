@@ -10,28 +10,23 @@ var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
 
 db.defaults({
-  customers: [
+  learners: [
     {
       id: 1,
-      name: "Blanche Devereux",
-      type: "Individual",
-      admin: "postman"
-    },
-    {
-      id: 2,
-      name: "Rose Nylund",
-      type: "Individual",
-      admin: "postman"
-    },
-    {
-      id: 3,
-      name: "Shady Pines",
-      type: "Company",
-      admin: "postman"
+      email: "sue.smith@postman.com",
+      query: "Sue Smith",
+      methods: 1,
+      school: "Lovely Bootcamp",
+      body: {hi: "there"},
+      auth_token: "abcde",
+      var: "value",
+      script: 1
     }
   ],
-  count: 3, calls: []
+  count: 1, calls: []
 }).write();
+//name is query param
+//template includes unresolved var
 
 var routes = function(app) {
   //
