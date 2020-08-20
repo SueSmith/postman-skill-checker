@@ -77,7 +77,7 @@ var routes = function(app) {
       //methods will be any other than get
       if(req.get("auth_key")) auth=1;
       if(req.get("course").indexOf('{{')<0) vars=1;
-      //tbc checking vars and scripts
+      //tbc checking scripts
       learner={email: email, methods: methods, bodies: bodies, auth: auth, vars: vars, script: script};
       db
       .get("learners")
