@@ -182,7 +182,7 @@ var routes = function(app) {
           {
             name: "Added a script",
             hint:
-              "Add script code to the request Tests to set a variable named 'responseData', with a value from the `rand` field in the response JSON. " +
+              "Add script code to the request Tests to set a collection variable named 'responseData', with a value from the `rand` field in the response JSON. " +
               "Hint: you'll need to run the request twice because the test code won't run until after the response is received.",
             value: learner.script > 0 ? true : false
           }
