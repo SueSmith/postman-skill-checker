@@ -10,6 +10,7 @@ var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
 const faker = require("faker");
 var validator = require("email-validator");
+const sendgridmail = require("@sendgrid/mail");
 
 db.defaults({
   learners: [
@@ -87,7 +88,11 @@ var routes = function(app) {
           auth = 0,
           vars = 0,
           script = 0;
-        if (req.query.email && req.query.email.length > 0 && validator.validate(req.query.email))
+        if (
+          req.query.email &&
+          req.query.email.length > 0 &&
+          validator.validate(req.query.email)
+        )
           email = req.query.email;
 
         if (req.body.name) bodies = 1;
@@ -142,9 +147,21 @@ var routes = function(app) {
         ? "Skill checker complete!!!"
         : "Skill checker incomplete!";
       let introMsg = done
-        ? "You completed the skill checker! Next....."
+        ? "You completed the skill checker! The Postman team will review your submissions and hopefully be in touch with your certification!"
         : "Complete each of the following request configurations and keep hitting Send to see the list update. " +
           "When you're done you'll get a 200 OK status code!";
+
+      if (done) {
+        const msg = {
+          to: "sue.smith@postman.com",
+          from: "sue@benormal.info",
+          subject: "Checker Submission",
+          html: "<h1>Learner submission received from:</h1><p>" + learner.email
+        };
+
+        sendgridmail.send(msg);
+      }
+
       res.status(statusCode).json({
         welcome: welcomeMsg,
         title: titleMsg,
@@ -177,13 +194,14 @@ var routes = function(app) {
             name: "Set a variable",
             hint:
               "Add a new variable to the collection, naming it 'myCourse' and giving it the name of your course as the Current value. " +
-              "(Leave the user-id var in place.)",
+              "(Leave the other var in place.)",
             value: learner.vars > 0 ? true : false
           },
           {
             name: "Added a script",
             hint:
-              "Add script code to the request Tests to set a variable named 'responseData', with a value from the `rand` field in the response JSON. " +
+              "Add script code to the request Tests to set a variable named 'responseData', with a value from the `rand` field in the response " +
+              "JSON that you'll see in the Pretty view. " +
               "Hint: You'll need to Send the request twice because the test code won't run until after the response is received.",
             value: learner.script > 0 ? true : false
           }
