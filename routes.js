@@ -28,16 +28,8 @@ db.defaults({
   count: 1,
   calls: []
 }).write();
-//email is query param
-//template includes unresolved var
 
 var routes = function(app) {
-  //
-  // This route processes GET requests, by using the `get()` method in express, and we're looking for them on
-  // the root of the application (in this case that's https://rest-api.glitch.me/), since we've
-  // specified `"/"`.  For any GET request received at "/", we're sending some HTML back and logging the
-  // request to the console. The HTML you see in the browser is what `res.send()` is sending back.
-  //
   app.get("/", function(req, res) {
     var newDate = new Date();
     db.get("calls")
@@ -52,7 +44,6 @@ var routes = function(app) {
         "New > Templates, and searching for 'API 101'. Open the first request in the collection and click Send. " +
         "To see the API code navigate to https://glitch.com/edit/#!/api-101 in your web browser"
     });
-    console.log("Received GET");
   });
 
   var welcomeMsg =
@@ -152,6 +143,7 @@ var routes = function(app) {
           "When you're done you'll get a 200 OK status code!";
 
       if (done) {
+        sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
         const msg = {
           to: "sue.smith@postman.com",
           from: "sue@benormal.info",
@@ -211,10 +203,6 @@ var routes = function(app) {
     } else next();
   });
 
-  //  app.get("/skills", function(req, res) {
-
-  //  });
-
   //protect everything after this by checking for the secret
   app.use((req, res, next) => {
     const apiSecret = req.get("admin_key");
@@ -224,12 +212,6 @@ var routes = function(app) {
       next();
     }
   });
-
-  // removes entries from users and populates it with default users
-  //  app.get("/reset", (request, response) => {
-
-  //    response.redirect("/");
-  //  });
 
   // removes all entries from the collection
   app.get("/clear", (request, response) => {
