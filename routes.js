@@ -9,6 +9,7 @@ var FileSync = require("lowdb/adapters/FileSync");
 var adapter = new FileSync(".data/db.json");
 var db = low(adapter);
 const faker = require("faker");
+var validator = require("email-validator");
 
 db.defaults({
   learners: [
@@ -86,7 +87,7 @@ var routes = function(app) {
           auth = 0,
           vars = 0,
           script = 0;
-        if (req.query.email && req.query.email.length > 0)
+        if (req.query.email && req.query.email.length > 0 && validator.validate(req.query.email))
           email = req.query.email;
 
         if (req.body.name) bodies = 1;
@@ -240,6 +241,7 @@ var routes = function(app) {
     db.get("learners")
       .remove({ id: parseInt(req.query.learner_id) })
       .write();
+
     res.status(200).json({ message: "deleted" });
   });
 };
