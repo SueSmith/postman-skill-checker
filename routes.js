@@ -1,5 +1,6 @@
 /*
-Hello! This is a learning API for the Postman student expert training. Check out the template: tbc
+Hello! This is a learning API for the Postman student expert training. 
+Check out the template: https://explore.postman.com/templates/11860/student-skill-checker
 */
 
 var xml = require("xml");

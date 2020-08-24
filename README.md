@@ -1,3 +1,3 @@
-# Postman Student Expert training
+# Postman Student Expert skill checker
 
-Import the template: **[tbc]()**
+Import the template: **[Student skill checker](https://explore.postman.com/templates/11860/student-skill-checker)**
