@@ -179,7 +179,7 @@ var routes = function(app) {
           {
             name: "Authorized",
             hint:
-              "Add API Key auth with the name `auth_key` and the name of your school as the value (add to the request header).",
+              "Add API Key auth with the Key name `auth_key` and the name of your school as the value (add to the request header).",
             value: learner.auth > 0 ? true : false
           },
           {
@@ -193,8 +193,8 @@ var routes = function(app) {
             name: "Added a script",
             hint:
               "Add script code to the request Tests to set a variable named 'responseData', with a value from the `rand` field in the response " +
-              "JSON that you'll see in the Pretty view. " +
-              "Hint: You'll need to Send the request twice because the test code won't run until after the response is received.",
+              "JSON that you'll see in the Pretty view. Hint: You'll need to Send the request twice after adding your code because it won't run "+
+              "until after the response is received the first time.",
             value: learner.script > 0 ? true : false
           }
         ],
