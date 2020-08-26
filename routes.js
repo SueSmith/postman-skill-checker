@@ -149,7 +149,7 @@ var routes = function(app) {
       if (done) {
         sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
         //only send once
-        if (learner.completed < 1) {
+        if (learner.completed < 1) { console.log(learner.completed)
           learner.completed = 1;
           db.get("learners")
             .push(learner)
