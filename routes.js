@@ -23,7 +23,7 @@ db.defaults({
       auth: 0,
       vars: 0,
       script: 0,
-      rand: "Sue", 
+      rand: "Sue",
       completed: 0
     }
   ],
@@ -105,7 +105,8 @@ var routes = function(app) {
           auth: auth,
           vars: vars,
           script: script,
-          rand: existing.rand//, completed: existing.completed
+          rand: existing.rand,
+          completed: existing.completed
         };
         db.get("learners")
           .find({ id: req.get("user-id") })
@@ -120,7 +121,8 @@ var routes = function(app) {
           auth: 0,
           vars: 0,
           script: 0,
-          rand: faker.name.firstName()//, completed: 0
+          rand: faker.name.firstName(),
+          completed: 0
         };
         db.get("learners")
           .push(learner)
@@ -147,15 +149,21 @@ var routes = function(app) {
       if (done) {
         sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
         //only send once
-        //if(learner.completed<1){  }
-        const msg = {
-          to: "sue.smith@postman.com",
-          from: "sue@benormal.info",
-          subject: "Checker Submission",
-          html: "<h1>Learner submission received from:</h1><p>" + learner.email
-        };
+        if (learner.completed < 1) {
+          learner.completed = 1;
+          db.get("learners")
+            .push(learner)
+            .write();
+          const msg = {
+            to: "sue.smith@postman.com",
+            from: "sue@benormal.info",
+            subject: "Checker Submission",
+            html:
+              "<h1>Learner submission received from:</h1><p>" + learner.email
+          };
 
-        sendgridmail.send(msg);
+          sendgridmail.send(msg);
+        }
       }
 
       res.status(statusCode).json({
@@ -196,8 +204,8 @@ var routes = function(app) {
           {
             name: "Added a script",
             hint:
-              "Add Test script code to set a variable (collection or environment) named 'responseData', with a value from the `rand` field "+
-              "in the response JSON (you'll see it in the Pretty view). Hint: You'll need to Send the request twice after adding your code "+
+              "Add Test script code to set a variable (collection or environment) named 'responseData', with a value from the `rand` field " +
+              "in the response JSON (you'll see it in the Pretty view). Hint: You'll need to Send the request twice after adding your code " +
               "because it won't save the value until after the response is received the first time.",
             value: learner.script > 0 ? true : false
           }
