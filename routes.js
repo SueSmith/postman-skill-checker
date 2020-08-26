@@ -23,7 +23,8 @@ db.defaults({
       auth: 0,
       vars: 0,
       script: 0,
-      rand: "Sue"
+      rand: "Sue", 
+      completed: 0
     }
   ],
   count: 1,
@@ -104,7 +105,7 @@ var routes = function(app) {
           auth: auth,
           vars: vars,
           script: script,
-          rand: existing.rand
+          rand: existing.rand//, completed: existing.completed
         };
         db.get("learners")
           .find({ id: req.get("user-id") })
@@ -119,7 +120,7 @@ var routes = function(app) {
           auth: 0,
           vars: 0,
           script: 0,
-          rand: faker.name.firstName()
+          rand: faker.name.firstName()//, completed: 0
         };
         db.get("learners")
           .push(learner)
@@ -145,6 +146,8 @@ var routes = function(app) {
 
       if (done) {
         sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
+        //only send once
+        //if(learner.completed<1){  }
         const msg = {
           to: "sue.smith@postman.com",
           from: "sue@benormal.info",
