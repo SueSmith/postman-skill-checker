@@ -75,7 +75,7 @@ var routes = function(app) {
       let learner = {};
       if (existing) {
         let email = "",
-          bodies = 0,
+          bodies = "",
           methods = 0,
           auth = 0,
           vars = 0,
@@ -87,7 +87,7 @@ var routes = function(app) {
         )
           email = req.query.email;
 
-        if (req.body.name) bodies = 1;
+        if (req.body.name) bodies = req.body.name;
         if (
           req.method === "POST" ||
           req.method === "PUT" ||
@@ -115,7 +115,7 @@ var routes = function(app) {
           id: req.get("user-id"),
           email: "",
           methods: 0,
-          bodies: 0,
+          bodies: "",
           auth: 0,
           vars: 0,
           script: 0,
@@ -128,7 +128,7 @@ var routes = function(app) {
       if (
         learner.email.length < 1 ||
         learner.methods < 1 ||
-        learner.bodies < 1 ||
+        learner.bodies.length < 1 ||
         learner.auth < 1 ||
         learner.vars < 1 ||
         learner.script < 1
@@ -139,10 +139,17 @@ var routes = function(app) {
         ? "Skill checker complete!!!"
         : "Skill checker incomplete!";
       let introMsg = done
-        ? "You completed the skill checker! The Postman team will review your submissions and hopefully be in touch with your certification!"
+        ? "You completed the skill checker! To complete your training, make sure all of your requests are saved, and in the collection on the "+
+          "left of Postman, open the overview &#9658; then click **Share**. Choose **Get public link** and generate or update your collection "+
+          "link. Copy the address to your clipboard, then open the final folder in the collection **3. Check Status** &gt; open the **Test "+
+          "Collection** request, paste your collection link in as the request address, **Send**, and this time open the **Test Results** "+
+          "tab to see the status of your collection. Any failed tests will indicate parts of the collection you still need to complete. Once "+
+          "all of your tests pass 🏆🎉🚀—**Save** the request and send the collection link via this form (the "+
+          "Postman team will check your submission and award your student expert certification! 📜🎓): https://forms.gle/PGYVq5SXVKDWmNUY7"
         : "Complete each of the following request configurations and keep hitting Send to see the list update. " +
           "When you're done you'll get a 200 OK status code!";
 
+      //remove
       if (done) {
         sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
           const msg = {
