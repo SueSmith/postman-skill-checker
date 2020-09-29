@@ -19,9 +19,9 @@ db.defaults({
       id: 1,
       email: "sue.smith@postman.com",
       methods: 0,
-      bodies: 0,
-      auth: 0,
-      vars: 0,
+      bodies: "",
+      auth: "",
+      vars: "",
       script: 0,
       rand: "Sue"
     }
@@ -51,7 +51,7 @@ var routes = function(app) {
     "You're using the Postman Skill Checker! " +
     "Click Visualize for a more readable view of the response.";
 
-  app.use("/skills", function(req, res, next) {
+  app.use("/skills", function(req, res, next) { 
     if (
       req.method === "GET" ||
       req.method === "POST" ||
@@ -77,8 +77,8 @@ var routes = function(app) {
         let email = "",
           bodies = "",
           methods = 0,
-          auth = 0,
-          vars = 0,
+          auth = "",
+          vars = "",
           script = 0;
         if (
           req.query.email &&
@@ -87,15 +87,15 @@ var routes = function(app) {
         )
           email = req.query.email;
 
-        if (req.body.name) bodies = req.body.name;
+        if (req.body.name) bodies = req.body.name; 
         if (
           req.method === "POST" ||
           req.method === "PUT" ||
           req.method === "DELETE"
         )
-          methods = 1;
-        if (req.get("auth_key")) auth = 1;
-        if (req.get("course").indexOf("{{") < 0) vars = 1;
+          methods = 1; 
+        if (req.get("auth_key")) auth = req.get("auth_key");
+        if (req.get("course").indexOf("{{") < 0) vars = req.get("course");
         if (req.get("response-value") == existing.rand) script = 1;
         learner = {
           email: email,
@@ -116,8 +116,8 @@ var routes = function(app) {
           email: "",
           methods: 0,
           bodies: "",
-          auth: 0,
-          vars: 0,
+          auth: "",
+          vars: "",
           script: 0,
           rand: faker.name.firstName()
         };
@@ -129,8 +129,8 @@ var routes = function(app) {
         learner.email.length < 1 ||
         learner.methods < 1 ||
         learner.bodies.length < 1 ||
-        learner.auth < 1 ||
-        learner.vars < 1 ||
+        learner.auth.length < 1 ||
+        learner.vars.length < 1 ||
         learner.script < 1
       )
         done = false;
@@ -184,20 +184,20 @@ var routes = function(app) {
             name: "Added body data",
             hint:
               "Add JSON body data including a field `name` with the value as your name.",
-            value: learner.bodies > 0 ? true : false
+            value: learner.bodies.length > 0 ? true : false
           },
           {
             name: "Authorized",
             hint:
               "Add API Key auth with the Key name `auth_key` and the name of your school as the value (add to the request header).",
-            value: learner.auth > 0 ? true : false
+            value: learner.auth.length > 0 ? true : false
           },
           {
             name: "Set a variable",
             hint:
               "Add a new variable to the collection, naming it 'myCourse' and giving it the name of your course as the Current value. " +
               "(Leave the other var in place.)",
-            value: learner.vars > 0 ? true : false
+            value: learner.vars.length > 0 ? true : false
           },
           {
             name: "Added a script",
