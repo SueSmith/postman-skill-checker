@@ -145,7 +145,7 @@ var routes = function(app) {
           "Collection** request, paste your collection link in as the request address, **Send**, and this time open the **Test Results** "+
           "tab to see the status of your collection. Any failed tests will indicate parts of the collection you still need to complete. Once "+
           "all of your tests pass—**Save** the request and send the collection link via this form (the "+
-          "Postman team will check your submission and award your student expert certification! 📜🎓): https://forms.gle/PGYVq5SXVKDWmNUY7"
+          "Postman team will check your submission and award your student expert certification! 📜🎓): bit.ly/student-expert-submission"
         : "Complete each of the following request configurations and keep hitting Send to see the list update. " +
           "When you're done you'll get a 200 OK status code!";
 
