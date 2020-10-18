@@ -150,7 +150,7 @@ var routes = function(app) {
         : "Complete each of the following request configurations and keep hitting Send to see the list update. " +
           "When you're done you'll get a 200 OK status code!";
 
-      //remove
+      /*
       if (done) {
         sendgridmail.setApiKey(process.env.SENDGRID_API_KEY);
           const msg = {
@@ -163,7 +163,7 @@ var routes = function(app) {
 
           sendgridmail.send(msg);
         
-      }
+      }*/
 
       res.status(statusCode).json({
         welcome: welcomeMsg,
