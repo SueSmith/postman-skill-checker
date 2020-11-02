@@ -204,9 +204,9 @@ var routes = function(app) {
           {
             name: "Added a script",
             hint:
-              "Add Test script code to set a variable (collection or environment) named 'responseData', with the value from the "+
-              "response JSON `rand` property. Hint: You'll need to Send the request twice after adding your code " +
-              "because it won't save the value until after the response is received the first time.",
+              "Add a test script that gets the value of the `rand` property in the response JSON and sets it"+
+              "as the value of a variable (at collection or environment scope) named `responseData`. Hint: You'll need to Send the request twice after "+
+              "adding your code because it won't save the value until after the response is received the first time.",
             value: learner.script > 0 ? true : false
           }
         ],
