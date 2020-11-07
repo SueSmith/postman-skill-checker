@@ -14,7 +14,8 @@
     "faker": "^4.1.0",
     "email-validator": "^2.0.4",
     "@sendgrid/mail": "^7.2.4",
-    "ms": "^2.1.2"
+    "ms": "^2.1.2",
+    "on-finished": "^2.3.0"
   },
   "engines": {
     "node": "6.x"

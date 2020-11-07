@@ -5,6 +5,8 @@ dependencies:
   express: 4.16.3
   faker: 4.1.0
   lowdb: 1.0.0
+  ms: 2.1.2
+  on-finished: 2.3.0
   xml: 1.0.1
 packages:
   /@sendgrid/client/7.2.4:
@@ -413,6 +415,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
+  /ms/2.1.2:
+    dev: false
+    resolution:
+      integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
   /negotiator/0.6.1:
     dev: false
     engines:
@@ -599,4 +605,6 @@ specifiers:
   express: ^4.12.4
   faker: ^4.1.0
   lowdb: ^1.0.0
+  ms: ^2.1.2
+  on-finished: ^2.3.0
   xml: ^1.0.1
