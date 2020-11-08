@@ -7,15 +7,14 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "body-parser": "^1.19.0",
-    "xml": "^1.0.1",
-    "lowdb": "^1.0.0",
-    "faker": "^5.1.0",
-    "email-validator": "^2.0.4",
     "@sendgrid/mail": "^7.4.0",
+    "body-parser": "^1.19.0",
+    "email-validator": "^2.0.4",
+    "express": "^4.17.1",
+    "faker": "^5.1.0",
+    "lowdb": "^1.0.0",
     "ms": "^2.1.2",
-    "on-finished": "^2.3.0"
+    "xml": "^1.0.1"
   },
   "engines": {
     "node": "6.x"

@@ -6,7 +6,6 @@ dependencies:
   faker: 5.1.0
   lowdb: 1.0.0
   ms: 2.1.2
-  on-finished: 2.3.0
   xml: 1.0.1
 packages:
   /@sendgrid/client/7.4.0:
@@ -514,5 +513,4 @@ specifiers:
   faker: ^5.1.0
   lowdb: ^1.0.0
   ms: ^2.1.2
-  on-finished: ^2.3.0
   xml: ^1.0.1
