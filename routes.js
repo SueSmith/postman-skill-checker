@@ -179,7 +179,7 @@ var routes = function(app) {
           {
             name: "Sent query parameter",
             hint:
-              "Add 'email' as a query param, with your student training email address (personal, not your school email) as the value.",
+              "Add 'email' as a query param, with your student training email address as the value.",
             value: learner.email.length > 0 ? true : false
           },
           {
