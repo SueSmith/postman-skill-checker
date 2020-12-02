@@ -173,13 +173,13 @@ var routes = function(app) {
         skills: [
           {
             name: "Changed method",
-            hint: "Change the request method to POST, PUT, or DELETE.",
+            hint: "Change the request method to `POST`, `PUT`, or `DELETE`.",
             value: learner.methods > 0 ? true : false
           },
           {
             name: "Sent query parameter",
             hint:
-              "Add 'email' as a query param, with your student training email address as the value.",
+              "Add `email` as a query param, with your student training email address as the value.",
             value: learner.email.length > 0 ? true : false
           },
           {
@@ -191,13 +191,14 @@ var routes = function(app) {
           {
             name: "Authorized",
             hint:
-              "Add API Key auth with the Key name `auth_key` and the name of your school as the value (add to the request header).",
+              "Add API Key auth with the Key name `auth_key` and how much you learned from the student expert template (e.g. `loads`, `nothing`, etc)"+
+              " as the value (add to the request header).",
             value: learner.auth.length > 0 ? true : false
           },
           {
             name: "Set a variable",
             hint:
-              "Add a new variable to the collection, naming it 'myCourse' and giving it the name of your course as the Current value. " +
+              "Add a new variable to the collection, naming it `myCourse` and enter the reason you're learning about APIs as the Current value. " +
               "(Leave the other var in place.)",
             value: learner.vars.length > 0 ? true : false
           },
