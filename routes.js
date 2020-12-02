@@ -87,14 +87,14 @@ var routes = function(app) {
         )
           email = req.query.email;
 
-        if (req.body.name) bodies = req.body.name; 
+        if (req.body.name.indexOf("{{") < 0) bodies = req.body.name; 
         if (
           req.method === "POST" ||
           req.method === "PUT" ||
           req.method === "DELETE"
         )
           methods = 1; 
-        if (req.get("auth_key")) auth = req.get("auth_key");
+        if (req.get("auth_key").indexOf("{{") < 0) auth = req.get("auth_key");
         if (req.get("course").indexOf("{{") < 0) vars = req.get("course");
         if (req.get("response-value") == existing.rand) script = 1;
         learner = {
