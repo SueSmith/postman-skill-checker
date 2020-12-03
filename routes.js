@@ -87,15 +87,15 @@ var routes = function(app) {
         )
           email = req.query.email;
 
-        if (req.body.name.indexOf("{{") < 0) bodies = req.body.name; 
+        if (req.body.name && req.body.name.indexOf("{{") < 0) bodies = req.body.name; 
         if (
           req.method === "POST" ||
           req.method === "PUT" ||
           req.method === "DELETE"
         )
           methods = 1; 
-        if (req.get("auth_key").indexOf("{{") < 0) auth = req.get("auth_key");
-        if (req.get("course").indexOf("{{") < 0) vars = req.get("course");
+        if (req.get("auth_key") && req.get("auth_key").indexOf("{{") < 0) auth = req.get("auth_key");
+        if (req.get("course") && req.get("course").indexOf("{{") < 0) vars = req.get("course");
         if (req.get("response-value") == existing.rand) script = 1;
         learner = {
           email: email,
@@ -205,7 +205,7 @@ var routes = function(app) {
           {
             name: "Added a script",
             hint:
-              "Add a test script that gets the value of the `rand` property in the response JSON and sets it"+
+              "Add a test script that gets the value of the `rand` property in the response JSON and sets it "+
               "as the value of a variable (at collection or environment scope) named `responseData`. Hint: You'll need to Send the request twice after "+
               "adding your code because it won't save the value until after the response is received the first time.",
             value: learner.script > 0 ? true : false
