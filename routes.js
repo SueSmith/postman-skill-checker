@@ -142,7 +142,7 @@ var routes = function(app) {
         ? "You completed the skill checker! To complete your training, make sure all of your requests are saved, and in the collection on the "+
           "left of Postman, open the overview > then click **Share**. Choose **Get public link** and generate or update your collection "+
           "link (note that each time you make a change you need to update the link). Copy the address to your clipboard, then open the final "+
-          "folder in the collection **3. Check Status** > open the **Test "+
+          "folder in the collection **3. Check Progress** > open the **Test "+
           "Collection** request, paste your collection link in as the request address, **Send**, and this time open the **Test Results** "+
           "tab to see the status of your collection. Any failed tests will indicate parts of the collection you still need to complete. Once "+
           "all of your tests pass—**Save** the request and send the collection link via this form (the "+
