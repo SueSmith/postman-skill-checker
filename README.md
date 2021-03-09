@@ -1,3 +1,3 @@
 # Postman Student Expert skill checker
 
-Import the template: **[Student skill checker](https://explore.postman.com/templates/11860/student-skill-checker)**
+Use the student expert collection in Postman! [bit.ly/student-workspace](https://bit.ly/student-workspace)
